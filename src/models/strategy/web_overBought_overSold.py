@@ -45,7 +45,7 @@ class The_OverBought_OverSold(object):
 
 
     def generate(self):
-        df = yf.download(self.ticker, start=self.start_date, end=self.end_dte, parse_dates=True)       
+        df = yf.download(self.ticker, period='1y', parse_dates=True)       
         df.reset_index(inplace=True)
         df.columns = [x.lower() for x in df.columns]
         df.date = df.date.astype("str")
