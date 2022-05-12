@@ -40,7 +40,7 @@ class Backtest(object):
     def __init__(self):
         self.today_stamp = str(datetime.now())[:10]
         
-        st.header("◾ 𝄖𝄖𝄖𝄗𝄗𝄘𝄘𝄘𝄙𝄙𝄚 · Backtesting · 𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄗𝄖𝄖𝄖 ◾")
+        st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Backtesting · 𝄚𝄙𝄘𝄗𝄖 ◾")
         st.header(f"{' '*25}") 
 
 
@@ -52,7 +52,7 @@ class Backtest(object):
 
 
             if mode == "Pyfolio":
-                st.header("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄙𝄚𝄚𝄚 Pyfolio Analysis 𝄚𝄚𝄚𝄙𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖")
+                st.header("𝄖𝄗𝄘𝄙𝄚 Pyfolio Analysis 𝄚𝄙𝄘𝄗𝄖")
                 st.header(f"{' '*25}")
                                 
                 stock_ticker = st.sidebar.text_input("[ 4 ] SELECT TICKER:", "NVDA")
@@ -73,12 +73,12 @@ class Backtest(object):
                 mod_01 = 'Auto Optimize' # 'Set Inputs'
                 
                 
-                st.header("𝄖𝄗𝄘𝄙𝄙𝄚𝄚 Strategy Comparrison Analysis 𝄚𝄚𝄙𝄙𝄘𝄗𝄖")
+                st.header("𝄖𝄗𝄘𝄙𝄚 Strategy Comparrison Analysis 𝄚𝄙𝄘𝄗𝄖")
                 st.header(f"{' '*25}")
                         
                 company_name = f0.company_longName(self.ticker)
                 x = f"{company_name} [{self.ticker}]"
-                st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄙𝄚𝄚𝄚 {x} 𝄚𝄚𝄚𝄙𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖")               
+                st.subheader(f"𝄖𝄗𝄘𝄙𝄚 {x} 𝄚𝄙𝄘𝄗𝄖")               
 
 
                 if self.strategy == "Single Moving Average":

@@ -34,7 +34,7 @@ class Strategy(object):
         self.saveDay = str(datetime.now())[8:10]
         
         
-        st.header("◾ 𝄖𝄖𝄖𝄗𝄗𝄗𝄘𝄘𝄘𝄙𝄙𝄚 · Strategy · 𝄚𝄙𝄙𝄘𝄘𝄘𝄗𝄗𝄗𝄖𝄖𝄖 ◾")
+        st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Strategy · 𝄚𝄙𝄘𝄗𝄖 ◾")
         st.header(f"{' '*25}")
 
 
@@ -134,7 +134,7 @@ class Strategy(object):
 
 
     def run_movAvg_sma_ema(self, stock_ticker):
-        st.header("𝄖𝄗𝄘𝄙𝄙𝄚𝄚 Optimal Double Moving Average 𝄚𝄚𝄙𝄙𝄘𝄗𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 Optimal Double Moving Average 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{' '*25}")
         S, L = s1.optimal_2sma(stock_ticker).grab_data(self.today_stamp)
         s1.movAvg_sma_ema(stock_ticker, S, L, self.today_stamp, 'SMA')
@@ -144,14 +144,14 @@ class Strategy(object):
         
 
     def run_optimal_sma(self, stock_ticker, graphit=True, cc=0.0, ccc=0.0):
-        st.header("𝄖𝄗𝄘𝄙𝄙𝄚𝄚 Optimal Single Moving Averages 𝄚𝄚𝄙𝄙𝄘𝄗𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 Optimal Single Moving Averages 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{' '*25}")
         s1.optimal_sma(stock_ticker, self.today_stamp).build_optimal_sma(graphit, cc, ccc)
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Strategy Complete")
 
         
     def run_indicators(self, stock_ticker):
-        st.header("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Indicator Analysis 𝄚𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 Indicator Analysis 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{' '*25}")
         # s1.Indicator_Ike(stock_ticker).kingpin()
         # st.subheader("𝄖𝄗𝄘𝄙𝄚 Strategy Complete")

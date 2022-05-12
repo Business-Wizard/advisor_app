@@ -87,7 +87,7 @@ class Analysis(object):
 
 
     def __init__(self, today_stamp):
-        st.header("◾ 𝄖𝄖𝄖𝄗𝄗𝄗𝄘𝄘𝄙𝄙𝄚 · Analysis · 𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄗𝄖𝄖𝄖 ◾")
+        st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Analysis · 𝄚𝄙𝄘𝄗𝄖 ◾")
         st.header(f"{' '*25}")        
         
         self.today_stamp = today_stamp
@@ -98,21 +98,21 @@ class Analysis(object):
 
 
     def analysis_homePage(self):
-        my_expander = st.expander("𝄖𝄖𝄗𝄗𝄗𝄘𝄘𝄘𝄘𝄙𝄙𝄙𝄙𝄙 Fundamental · Analysis 𝄙𝄙𝄙𝄙𝄙𝄘𝄘𝄘𝄘𝄗𝄗𝄗𝄖𝄖", expanded=False)
+        my_expander = st.expander("𝄖𝄗𝄘𝄙𝄚 Fundamental · Analysis 𝄚𝄙𝄘𝄗𝄖", expanded=False)
         with my_expander:
             clicked = w0.widget_online_resource("https://www.investopedia.com/terms/f/fundamentalanalysis.asp")
             clicked = w0.widget_analysis("Definition", analysis_script_1)
             clicked = w0.widget_analysis("The 6 Segments to perform fundamental analysis on stocks", analysis_script_2,)
             clicked = w0.widget_analysis2("KEY TAKEAWAYS", analysis_script_3)
 
-        my_expander = st.expander("𝄖𝄖𝄗𝄗𝄗𝄘𝄘𝄘𝄘𝄙𝄙𝄙𝄙𝄙 Technical · Analysis 𝄙𝄙𝄙𝄙𝄙𝄘𝄘𝄘𝄘𝄗𝄗𝄗𝄖𝄖", expanded=False)
+        my_expander = st.expander("𝄖𝄗𝄘𝄙𝄚 Technical · Analysis 𝄚𝄙𝄘𝄗𝄖", expanded=False)
         with my_expander:
             clicked = w0.widget_online_resource("https://www.investopedia.com/terms/t/technicalanalysis.asp")
             clicked = w0.widget_analysis("Definition", analysis_script_4)
             clicked = w0.widget_analysis("Examples of technical analysis tools include:", analysis_script_5)
             clicked = w0.widget_analysis2("KEY TAKEAWAYS", analysis_script_6)
 
-        my_expander = st.expander("𝄖𝄖𝄗𝄗𝄗𝄘𝄘𝄘𝄘𝄙𝄙𝄙𝄙𝄙 Procedure 𝄙𝄙𝄙𝄙𝄙𝄘𝄘𝄘𝄘𝄗𝄗𝄗𝄖𝄖", expanded=False)
+        my_expander = st.expander("𝄖𝄗𝄘𝄙𝄚 Procedure 𝄚𝄙𝄘𝄗𝄖", expanded=False)
         with my_expander:
             clicked = w0.widget_analysis("Instructions:", instructions_script)
 
@@ -130,7 +130,7 @@ class Analysis(object):
     def run_fundamental_analysis(self, ticker):
         company_name = f0.company_longName(ticker)
         x = f"{company_name} [{ticker}]"
-        st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄙 Fundamental Analysis · {x} 𝄙𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖")
+        st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Fundamental Analysis · {x} 𝄚𝄙𝄘𝄗𝄖")
         st.subheader('𝄖'*41)
                     
         stock = yf.Ticker(ticker)
@@ -203,7 +203,7 @@ class Analysis(object):
     def run_technical_analysis(self, ticker):
         company_name = f0.company_longName(ticker)
         x = f"{company_name} [{ticker}]"
-        st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄙 Technical Analysis · {x} 𝄙𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖")
+        st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Technical Analysis · {x} 𝄚𝄙𝄘𝄗𝄖")
         st.subheader('𝄖'*41)
 
         def calcMovingAverage(data, size):

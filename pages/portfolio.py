@@ -97,7 +97,7 @@ class Portfolio(object):
 
 
     def run_randomForest(self, ticker_list):
-        st.header("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 ▷ Random Forest (RF) ◁ 𝄚𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Random Forest (RF) ◁ 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{'𝄖'*33}")
 
         if st.sidebar.button("Run Mod"):
@@ -129,7 +129,7 @@ class Portfolio(object):
 
 
     def run_efficientFrontier(self, ticker_list):
-        st.header("𝄖𝄖𝄗𝄗𝄘𝄙𝄚 ▷ Markowitz Efficient Frontier ◁ 𝄚𝄙𝄘𝄗𝄗𝄖𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Markowitz Efficient Frontier ◁ 𝄚𝄙𝄘𝄗𝄖")
         cols = st.columns(2)
         with cols[0]:       
             with st.expander("▷ Details:", expanded=False):            
@@ -171,7 +171,7 @@ class Portfolio(object):
     # ----------------------------------------------------------------------------------------- > stage: [PORTFOLIO]
 
     def run_portfolio(self):
-        st.header("◾ 𝄖𝄖𝄖𝄗𝄗𝄗𝄘𝄘𝄙𝄙𝄚 · Portfolio · 𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄗𝄖𝄖𝄖 ◾")
+        st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Portfolio · 𝄚𝄙𝄘𝄗𝄖 ◾")
         st.header(f"{' '*25}")                   
 
         model = st.sidebar.selectbox("[ 2 ] Choose A Model", l0.feature_portfolio)
