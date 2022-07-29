@@ -62,10 +62,13 @@ class Forecast(object):
         with cols[0]:       
             with st.expander("▷ Details:", expanded=False):         
                 clicked = w0.widget_prophet(prophet_script_1, prophet_script_2, prophet_url)
-        st.header(f"{'𝄖'*33}")        
-        ender_date = str(st.sidebar.date_input("[ 4 ] Forecast Start Date", datetime(2022, 1, 1)))[:10]
+
+        # ender_date = str(st.sidebar.date_input("[ 4 ] Forecast Start Date", datetime(2022, 1, 1)))[:10]
         # prophet_period_1 = st.sidebar.selectbox("[ 5 ] Forcast Period (DAYS)", casting_periods, index=2)
-        prophet_period_1 = st.number_input(label='', min_value=1, max_value=378, value=30)
+
+        ender_date = str(datetime.now())[:10]
+        prophet_period_1 = st.sidebar.number_input(label='', min_value=1, max_value=378, value=30)
+
         if st.sidebar.button("[ 6 ] RUN PROPHET FORECAST"):
             if type(self.one_er_many) == str:
                 for r in ticker_list:
