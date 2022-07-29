@@ -72,6 +72,24 @@ class Forecast(object):
                 f1.prophet(ticker_list, ender_date, prophet_period_1, hist="2y").run_prophet()
 
 
+    def monte_carlo(self, ticker_list):
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Monte Carlo Simulations ◁ 𝄚𝄙𝄘𝄗𝄖")
+        cols = st.columns(2)
+        with cols[0]:       
+            with st.expander("▷ Details:"): 
+                st.caption(
+                    f"\
+                    * A Monte Carlo simulation is a useful tool for predicting future results calculating \
+                        a formula multiple times with different random inputs. \n\
+                    ")
+        st.header(f"{'𝄖'*33}")        
+        if st.sidebar.button("[ 4 ] RUN MONTE CARLO FORECAST"):
+            for stock_ticker in ticker_list:
+                f1.monteCarlo(stock_ticker).creation_B()
+                # st.write(" *" * 25)
+                # f1.monteCarlo(stock_ticker).creation_A()
+                
+
     def mc_forecast(self, ticker_list):
         st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Monte Carlo Cholesky ◁ 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{'𝄖'*33}")
@@ -154,24 +172,6 @@ class Forecast(object):
             if type(ticker_list) == str:
                 f1.arima1(ticker_list).arima_model()
                 f1.arima2(stock_ticker).runArima()
-
-
-    def monte_carlo(self, ticker_list):
-        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Monte Carlo Simulations ◁ 𝄚𝄙𝄘𝄗𝄖")
-        cols = st.columns(2)
-        with cols[0]:       
-            with st.expander("▷ Details:"): 
-                st.caption(
-                    f"\
-                    * A Monte Carlo simulation is a useful tool for predicting future results calculating \
-                        a formula multiple times with different random inputs. \n\
-                    ")
-        st.header(f"{'𝄖'*33}")        
-        if st.sidebar.button("[ 4 ] RUN MONTE CARLO FORECAST"):
-            for stock_ticker in ticker_list:
-                f1.monteCarlo(stock_ticker).creation_B()
-                # st.write(" *" * 25)
-                # f1.monteCarlo(stock_ticker).creation_A()
                 
                 
     def univariate(self, ticker_list):
