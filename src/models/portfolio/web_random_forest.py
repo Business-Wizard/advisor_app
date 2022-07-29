@@ -106,7 +106,6 @@ class The_Random_Forest(object):
         present["tickers"] = list(self.component_df.columns[feature_importances[-1::-1]])
         n = len(self.component_df.columns)
         
-        # importances = forest_fit.feature_importances_[:n]
         importances = self.rf.feature_importances_[:n]
         std = np.std([tree.feature_importances_ for tree in self.rf.estimators_], axis=0)
         indices = np.argsort(importances)[::-1]

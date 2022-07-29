@@ -90,9 +90,6 @@ class Forecast(object):
     def stocker(self, ticker_list):
         st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Stocker ◁ 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{'𝄖'*33}")        
-        # stocker_forcast_period = st.sidebar.selectbox("[ 4 ] Forcast Period (DAYS)", casting_periods, index=2)
-        # e_date = str(st.sidebar.date_input("[ 5 ] Forecast Start Date", datetime(2022, 1, 1)))[:10]
-
         stocker_forcast_period = st.sidebar.number_input(label='Forcast Period (DAYS)', min_value=1, max_value=378, value=60)
         e_date = str(datetime.now())[:10]
         if st.sidebar.button("[ 6 ] RUN STOCKER FORECAST"):
