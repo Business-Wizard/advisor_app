@@ -44,8 +44,8 @@ class The_Monte_Carlo(object):
         returns = adj_close.pct_change().dropna()
         
         # - Split data into the training and test sets:
-        train = returns[:"2021-01-01"]
-        test = returns["2021-01-01":]
+        train = returns[:"2022-01-01"]
+        test = returns["2022-01-01":]
 
         # - Specify the parameters of the simulation:
         dt = 1
@@ -130,7 +130,7 @@ class The_Monte_Carlo(object):
 
 
     def creation_B(self):
-        data = pd.DataFrame(yf.download(self.stock, start='2012-01-03', end='2022-01-03')['Adj Close'])
+        data = pd.DataFrame(yf.download(self.stock, start='2020-01-03', end='2022-01-03')['Adj Close'])
         data.columns = [self.stock]
         pred_date = data.index[-1]        
         
