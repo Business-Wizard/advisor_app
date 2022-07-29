@@ -50,7 +50,7 @@ class Strategy(object):
                 self.run_optimal_sma(self.stock_ticker)
                 self.run_overBought_overSold(self.stock_ticker)
                 self.run_supportResistance(self.stock_ticker)
-                self.run_strategyII(self.stock_ticker)
+                # self.run_strategyII(self.stock_ticker)
 
 
         if method_strat == "Individual Strategy":
@@ -61,7 +61,7 @@ class Strategy(object):
                 self.run_homePage()
                 
             else:
-                if st.sidebar.button("[ 5 ] Implement Strategy"):
+                if st.sidebar.button("Implement Strategy"):
 
                     if model == "Moving-Average":
                         st.sidebar.write("__" * 25)
@@ -149,32 +149,23 @@ class Strategy(object):
         st.header("𝄖𝄗𝄘𝄙𝄚 Optimal Single Moving Averages 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{' '*25}")
         s1.optimal_sma(stock_ticker, self.today_stamp).build_optimal_sma(graphit, cc, ccc)
-        st.subheader("𝄖𝄗𝄘𝄙𝄚 Strategy Complete")
-
         
     def run_indicators(self, stock_ticker):
         st.header("𝄖𝄗𝄘𝄙𝄚 Indicator Analysis 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{' '*25}")
         # s1.Indicator_Ike(stock_ticker).kingpin()
-        # st.subheader("𝄖𝄗𝄘𝄙𝄚 Strategy Complete")
-
 
     def run_overBought_overSold(self, stock_ticker):
         st.header("𝄖𝄗𝄘𝄙𝄙𝄚𝄚 Over Bought & Over Sold Analysis 𝄚𝄚𝄙𝄙𝄘𝄗𝄖")
         st.header(f"{' '*25}")
         s1.overBought_overSold(stock_ticker).generate()
-        st.subheader("𝄖𝄗𝄘𝄙𝄚 Strategy Complete")
-
 
     def run_supportResistance(self, stock_ticker):
         st.header("𝄖𝄗𝄘𝄙𝄙𝄚𝄚 Support & Resistance Analysis 𝄚𝄚𝄙𝄙𝄘𝄗𝄖")
         st.header(f"{' '*25}")
         s1.support_resistance(stock_ticker).level()
-        st.subheader("𝄖𝄗𝄘𝄙𝄚 Strategy Complete")
-
 
     def run_strategyII(self, stock_ticker):
         st.header("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Strategy II Analysis 𝄚𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖")
         st.header(f"{' '*25}")
         s1.Trading_Technicals(stock_ticker).trading_technicals()
-        st.subheader("𝄖𝄗𝄘𝄙𝄚 Strategy Complete")
