@@ -39,10 +39,11 @@ class Strategy(object):
 
 
     def run_the_strats(self):
-        method_strat = st.sidebar.selectbox("[ 2 ] Select Method", ("Individual Strategy", "Run All Strategies"))
-        model = st.sidebar.selectbox("[ 3 ] Select Model", l0.feature_strategy, index=0)
+        method_strat = st.sidebar.selectbox("Select Method", ("Individual Strategy", "Run All Strategies"))
+        
         
         if method_strat == "Run All Strategies":
+            self.stock_ticker = st.sidebar.text_input(label="Enter Stock In ALL CAPS [example: TSLA]", value="")
             st.sidebar.write(" *" * 25)            
             if st.sidebar.button("Run Strategies"):
                 self.run_movAvg_sma_ema(self.stock_ticker)
@@ -53,7 +54,8 @@ class Strategy(object):
 
 
         if method_strat == "Individual Strategy":
-            self.stock_ticker = st.sidebar.text_input(label="[ 4 ] Enter Stock In ALL CAPS [example: TSLA]", value="TSLA")
+            model = st.sidebar.selectbox("Select Model", l0.feature_strategy, index=0)
+            self.stock_ticker = st.sidebar.text_input(label="Enter Stock In ALL CAPS [example: TSLA]", value="TSLA")
 
             if model == "-Select-Model-":
                 self.run_homePage()

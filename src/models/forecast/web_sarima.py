@@ -42,8 +42,7 @@ class The_SARIMA_Model(object):
 
 
     def dataHull(self):
-        self.start = "2011-10-01"
-        self.end = "2021-10-19"
+        self.end = "2020-01-01"
         self.x_data = yf.download(self.sss, start=self.end)["Adj Close"]
         self.x_data.columns = [self.company]
 

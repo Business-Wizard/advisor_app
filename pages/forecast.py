@@ -62,13 +62,8 @@ class Forecast(object):
         with cols[0]:       
             with st.expander("▷ Details:", expanded=False):         
                 clicked = w0.widget_prophet(prophet_script_1, prophet_script_2, prophet_url)
-
-        # ender_date = str(st.sidebar.date_input("[ 4 ] Forecast Start Date", datetime(2022, 1, 1)))[:10]
-        # prophet_period_1 = st.sidebar.selectbox("[ 5 ] Forcast Period (DAYS)", casting_periods, index=2)
-
         ender_date = str(datetime.now())[:10]
-        prophet_period_1 = st.sidebar.number_input(label='', min_value=1, max_value=378, value=30)
-
+        prophet_period_1 = st.sidebar.number_input(label='', min_value=1, max_value=378, value=60)
         if st.sidebar.button("[ 6 ] RUN PROPHET FORECAST"):
             if type(self.one_er_many) == str:
                 for r in ticker_list:
@@ -80,13 +75,13 @@ class Forecast(object):
     def mc_forecast(self, ticker_list):
         st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Monte Carlo Cholesky ◁ 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{'𝄖'*33}")
-        forecast_days = st.sidebar.selectbox("[ 4 ] Forcast Period (DAYS)", casting_periods, index=2)
-        if st.sidebar.button("[ 5 ] Run Monte Carlo Sim Forecast"):
+        forecast_days = st.sidebar.number_input(label='', min_value=1, max_value=378, value=60)
+        if st.sidebar.button("Run Monte Carlo Sim Forecast"):
             f1.MC_Forecast().monte_carlo(
                 tickers=ticker_list,
                 days_forecast=forecast_days,
                 iterations=13000,
-                start_date="2010-01-01",
+                start_date="2012-01-01",
                 return_type="log",
                 plotten=False,
                 )
@@ -95,8 +90,11 @@ class Forecast(object):
     def stocker(self, ticker_list):
         st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Stocker ◁ 𝄚𝄙𝄘𝄗𝄖")
         st.header(f"{'𝄖'*33}")        
-        stocker_forcast_period = st.sidebar.selectbox("[ 4 ] Forcast Period (DAYS)", casting_periods, index=2)
-        e_date = str(st.sidebar.date_input("[ 5 ] Forecast Start Date", datetime(2022, 1, 1)))[:10]
+        # stocker_forcast_period = st.sidebar.selectbox("[ 4 ] Forcast Period (DAYS)", casting_periods, index=2)
+        # e_date = str(st.sidebar.date_input("[ 5 ] Forecast Start Date", datetime(2022, 1, 1)))[:10]
+
+        stocker_forcast_period = st.sidebar.number_input(label='Forcast Period (DAYS)', min_value=1, max_value=378, value=60)
+        e_date = str(datetime.now())[:10]
         if st.sidebar.button("[ 6 ] RUN STOCKER FORECAST"):
             if type(self.one_er_many) == str:
                 for r in ticker_list:
@@ -137,7 +135,7 @@ class Forecast(object):
         st.header("𝄖𝄗𝄘𝄙𝄚 ▷ SARIMA ◁ 𝄚𝄙𝄘𝄗𝄖")
         st.caption("* Seasonal AutoRegressive Integrated Moving Average")
         st.header(f"{'𝄖'*33}")                      
-        if st.sidebar.button("[ 4 ] RUN SARIMA FORECAST"):
+        if st.sidebar.button("RUN SARIMA FORECAST"):
             if type(ticker_list) == list:
                 for stock_ticker in ticker_list:
                     f1.sarima(stock_ticker).predict()
@@ -201,45 +199,30 @@ class Forecast(object):
         
 
         self.one_er_many = "List"
-        st.sidebar.write("\
-            - NOTE: all models take time to run \n\
-            - Careful using with too many tickers \n\
-            "
-        )
-        
         model = st.sidebar.selectbox("[ 2 ] Select Model:", l0.feature_forecast)
-        
-        personal_stocks = st.sidebar.text_input("[ 3 ] Enter Stock", value="AAPL")
+        personal_stocks = st.sidebar.text_input("Enter Stock", value="AAPL")
         personal_stocks = personal_stocks.split()        
 
         if model == "Prophet Model":
             self.prophet(personal_stocks)
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Forecast Complete")
 
         if model == "Stocker Analysis":
             self.stocker(personal_stocks)
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Forecast Complete")
 
         if model == "SARIMA":
             self.sarima(personal_stocks)
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Forecast Complete")
             
         if model == "Monte Carlo Cholesky":
             self.mc_forecast(personal_stocks)      
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Forecast Complete")      
 
         if model == "Monte Carlo Simulation":
             self.monte_carlo(personal_stocks)
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Forecast Complete")
 
         if model == "Univariate Analysis":
             self.univariate(personal_stocks)
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Forecast Complete")
             
         if model == "Regression":
             self.regression(personal_stocks)       
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Forecast Complete")     
 
         if model == "ARIMA":
             self.arima(personal_stocks)
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Forecast Complete")
