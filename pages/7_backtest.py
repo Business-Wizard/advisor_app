@@ -40,8 +40,8 @@ class Backtest(object):
     def __init__(self):
         self.today_stamp = str(datetime.now())[:10]
         
-        st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Backtesting · 𝄚𝄙𝄘𝄗𝄖 ◾")
-        st.header(f"{' '*25}") 
+        st.title("𝄖𝄗𝄘𝄙𝄚 · Backtesting · 𝄚𝄙𝄘𝄗𝄖")
+        st.title(f"{'𝄖'*20}") 
 
 
     def backtest_1(self):
@@ -52,7 +52,7 @@ class Backtest(object):
 
 
             if mode == "Pyfolio":
-                st.header("𝄖𝄗𝄘𝄙𝄚 Pyfolio Analysis 𝄚𝄙𝄘𝄗𝄖")
+                st.header("Pyfolio · Analysis")
                 st.header(f"{' '*25}")
                                 
                 stock_ticker = st.sidebar.text_input("[ 4 ] SELECT TICKER:", "NVDA")
@@ -73,7 +73,7 @@ class Backtest(object):
                 mod_01 = 'Auto Optimize' # 'Set Inputs'
                 
                 
-                st.header("𝄖𝄗𝄘𝄙𝄚 Strategy Comparrison Analysis 𝄚𝄙𝄘𝄗𝄖")
+                st.header("Strategy Comparrison Analysis")
                 st.header(f"{' '*25}")
                         
                 company_name = f0.company_longName(self.ticker)
@@ -134,9 +134,11 @@ class Backtest(object):
                             st.info("Percent return on this strategy would have been {:.2%}".format(sma_trade.Cumulative[-1]))
                             st.success("Percent return on buy and hold would have been {:.2%}".format((sma_trade.close[-1] - sma_trade.close[0])/ sma_trade.close[0]))
 
+
         if method == "Portfolio":
-            opts = ["4M Portfolios", "Your Own"]
-            version = st.sidebar.selectbox("Select Version", opts)
+            # opts = ["4M Portfolios", "Your Own"]
+            # version = st.sidebar.selectbox("Select Version", opts)
+            version = 'Your Own'
 
             if version == "Your Own":
                 portfolio = st.sidebar.text_input("TICKERS ONLY", "NVDA AAPL AMZN GOOGL FB MSFT")
@@ -200,3 +202,8 @@ class Backtest(object):
                     st.pyplot(pf.create_simple_tear_sheet(portfolio_returns))
                     st.pyplot(pf.create_returns_tear_sheet(portfolio_returns))
                     st.pyplot(pf.create_full_tear_sheet(portfolio_returns))
+
+
+
+if __name__ == '__main__':   
+    Backtest().backtest_1()

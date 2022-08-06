@@ -54,20 +54,20 @@ class Portfolio(object):
 
 
     def run_pca(self, ticker_list, report_date):
-        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Principal Component Analysis (PCA) ◁ 𝄚𝄙𝄘𝄗𝄖")
-        cols = st.columns(2)
-        with cols[0]:       
-            with st.expander("▷ Details:", expanded=False):                    
-                st.caption(f"\
-                    * Principal Component Analysis, or PCA, is a dimensionality-reduction method that is \
-                    often used to reduce the dimensionality of large data sets, by transforming a large set of \
-                    variables into a smaller one that still contains most of the information in the large set. "
-                    )
-                st.caption(f"{' '*25}")
-                pca_web_page = "https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c"
-                if st.button("Open Principal Component Analysis (PCA) Web Page"):
-                    webbrowser.open_new_tab(pca_web_page)
-        st.header(f"{'𝄖'*33}")
+        st.header("▷ Principal Component Analysis (PCA) ◁")
+        # cols = st.columns(2)
+        # with cols[0]:       
+        #     with st.expander("▷ Details:", expanded=False):                    
+        #         st.caption(f"\
+        #             * Principal Component Analysis, or PCA, is a dimensionality-reduction method that is \
+        #             often used to reduce the dimensionality of large data sets, by transforming a large set of \
+        #             variables into a smaller one that still contains most of the information in the large set. "
+        #             )
+        #         st.caption(f"{' '*25}")
+        #         pca_web_page = "https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c"
+        #         if st.button("Open Principal Component Analysis (PCA) Web Page"):
+        #             webbrowser.open_new_tab(pca_web_page)
+        # st.header(f"{'𝄖'*33}")
         
         if st.sidebar.button("[ 4 ] Run Mod"):
             st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Selected Stock Portfolio: [{len(ticker_list)}]")
@@ -171,8 +171,8 @@ class Portfolio(object):
     # ----------------------------------------------------------------------------------------- > stage: [PORTFOLIO]
 
     def run_portfolio(self):
-        st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Portfolio · 𝄚𝄙𝄘𝄗𝄖 ◾")
-        st.header(f"{' '*25}")                   
+        st.title("𝄖𝄗𝄘𝄙𝄚 · Portfolio · 𝄚𝄙𝄘𝄗𝄖")
+        st.title(f"{' '*25}")                   
 
         model = st.sidebar.selectbox("[ 2 ] Choose A Model", l0.feature_portfolio)
         
@@ -270,3 +270,9 @@ class Portfolio(object):
         #     # self.recommender_dataset = self.recommender_dataset[self.recommender_dataset["RS_Rating"] >= min_RS_Rating_score]
         #     # self.recommender_dataset = self.recommender_dataset[self.recommender_dataset["Sentiment_Score"]>= min_Sentiment_Score]
         #     # self.recommender_dataset = self.recommender_dataset[self.recommender_dataset["adj_analyst_recom"]>= min_Analyst_Recom_score]
+
+
+
+if __name__ == '__main__':    
+    today_stamp = str(datetime.now())[:10]
+    Portfolio(today_stamp).run_portfolio()        

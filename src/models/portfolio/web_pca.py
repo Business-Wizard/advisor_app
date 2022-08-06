@@ -12,16 +12,16 @@ from datetime import datetime
 path = Path.cwd()
 
 plt.style.use("ggplot")
-sm, med, lg = 10, 15, 20
-plt.rc("font", size=sm)  # controls default text sizes
-plt.rc("axes", titlesize=med)  # fontsize of the axes title
-plt.rc("axes", labelsize=med)  # fontsize of the x & y labels
-plt.rc("xtick", labelsize=sm)  # fontsize of the tick labels
-plt.rc("ytick", labelsize=sm)  # fontsize of the tick labels
-plt.rc("legend", fontsize=sm)  # legend fontsize
-plt.rc("figure", titlesize=lg)  # fontsize of the figure title
-plt.rc("axes", linewidth=2)  # linewidth of plot lines
-plt.rcParams["figure.figsize"] = [15, 5]
+# sm, med, lg = 10, 15, 20
+# plt.rc("font", size=sm)  # controls default text sizes
+# plt.rc("axes", titlesize=med)  # fontsize of the axes title
+# plt.rc("axes", labelsize=med)  # fontsize of the x & y labels
+# plt.rc("xtick", labelsize=sm)  # fontsize of the tick labels
+# plt.rc("ytick", labelsize=sm)  # fontsize of the tick labels
+# plt.rc("legend", fontsize=sm)  # legend fontsize
+# plt.rc("figure", titlesize=lg)  # fontsize of the figure title
+# plt.rc("axes", linewidth=2)  # linewidth of plot lines
+# plt.rcParams["figure.figsize"] = [15, 5]
 plt.rcParams["figure.dpi"] = 100
 
 

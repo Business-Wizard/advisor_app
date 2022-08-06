@@ -28,11 +28,10 @@ def widget_1(script):
     st.write(f"{'__'*25}")
 
 analysis_script_1 = "\
-    - Fundamental analysis is a method of evaluating the intrinsic value of an asset and analyzing \
-            the factors that could influence its price in the future. \n\
-    * This form of analysis is based on \
-            external events and influences, as well as financial statements and industry trends. \n\
-    * Fundamental analysts are concerned with the difference between a stock's value, and the price at which it is trading."
+    - Fundamental analysis is a method of evaluating the intrinsic value of an asset \n\
+    - Analyze the factors that influence an asset's price in the future. \n\
+    - This form of analysis is based on external events and influences, as well as financial statements and industry trends. \n\
+    - Fundamental analysts are concerned with the difference between a stock's value, and the price at which it is trading."
 analysis_script_2 = "\
     - Use the financial ratios for initial screening \n\
     - Understand the company \n\
@@ -67,13 +66,10 @@ analysis_script_6 = f"\
         may seem overwhelming or esoteric at first. \n\
     * Beginners should first understand why technical analysis works as a window \
         into market psychology to identify opportunities to profit. \n\
-    * Focus on a particular trading approach and develop a disciplined strategy that you \
-        can follow without letting emotions or second-guessing get in the way. \n\
-    * Find a broker that can help you execute your plan affordably while also providing \
-        a trading platform with the right suite of tools you'll need. "
+    * Focus on developing a particular disciplined trading strategy to follow without Emotions/2nd-Guessing. \n\
+    * Find a broker that to help execute plan affordably & also provide trading platform with the right suite of tools."
 instructions_script = "\
-    * All Interaction will operate through the side-pannel \n\
-    * The side-pannel can be accessed via the '>' icon in the upper-left corner \n\
+    * Use the side-pannel (left) to navigate this app \n\
     * Follow the Steps on the side pannel for each model. \n\
     * Each graph can be maximized to full screen by clicking the icon off to the upper-right of the graph \n\
     * Each model will have their own criteria either asking for a single ticker or ticker list\n \n\
@@ -89,53 +85,44 @@ class Analysis(object):
     def __init__(self, today_stamp):
         st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Analysis · 𝄚𝄙𝄘𝄗𝄖 ◾")
         st.header(f"{' '*25}")        
-        
         self.today_stamp = today_stamp
-        self.saveMonth = str(self.today_stamp)[:7]
+        self.saveMonth = str(today_stamp)[:7]
         self.saveTickers = Path(f"data/tickers/{self.saveMonth}/{self.today_stamp}/")
         if not self.saveTickers.exists():
             self.saveTickers.mkdir(parents=True)
 
 
     def analysis_homePage(self):
-        my_expander = st.expander("𝄖𝄗𝄘𝄙𝄚 Fundamental · Analysis 𝄚𝄙𝄘𝄗𝄖", expanded=False)
-        with my_expander:
-            clicked = w0.widget_online_resource("https://www.investopedia.com/terms/f/fundamentalanalysis.asp")
-            clicked = w0.widget_analysis("Definition", analysis_script_1)
-            clicked = w0.widget_analysis("The 6 Segments to perform fundamental analysis on stocks", analysis_script_2,)
-            clicked = w0.widget_analysis2("KEY TAKEAWAYS", analysis_script_3)
-
-        my_expander = st.expander("𝄖𝄗𝄘𝄙𝄚 Technical · Analysis 𝄚𝄙𝄘𝄗𝄖", expanded=False)
-        with my_expander:
-            clicked = w0.widget_online_resource("https://www.investopedia.com/terms/t/technicalanalysis.asp")
-            clicked = w0.widget_analysis("Definition", analysis_script_4)
-            clicked = w0.widget_analysis("Examples of technical analysis tools include:", analysis_script_5)
-            clicked = w0.widget_analysis2("KEY TAKEAWAYS", analysis_script_6)
-
-        my_expander = st.expander("𝄖𝄗𝄘𝄙𝄚 Procedure 𝄚𝄙𝄘𝄗𝄖", expanded=False)
-        with my_expander:
-            clicked = w0.widget_analysis("Instructions:", instructions_script)
-
+        tab1, tab2, tab3 = st.tabs(["𝄖𝄗𝄘𝄙𝄚 Fundamental · Analysis 𝄚𝄙𝄘𝄗𝄖", "𝄖𝄗𝄘𝄙𝄚 Technical · Analysis 𝄚𝄙𝄘𝄗𝄖", "𝄖𝄗𝄘𝄙𝄚 Instructions 𝄚𝄙𝄘𝄗𝄖"])
+        with tab1:
+            w0.widget_analysis("Definition", analysis_script_1)
+            w0.widget_analysis("The 6 Segments to perform fundamental analysis on stocks", analysis_script_2,)
+            w0.widget_analysis2("KEY TAKEAWAYS", analysis_script_3)
+            w0.widget_online_resource("https://www.investopedia.com/terms/f/fundamentalanalysis.asp")
+        with tab2:
+            w0.widget_analysis("Definition", analysis_script_4)
+            w0.widget_analysis("Examples of technical analysis tools include:", analysis_script_5)
+            w0.widget_analysis2("KEY TAKEAWAYS", analysis_script_6)
+            w0.widget_online_resource("https://www.investopedia.com/terms/t/technicalanalysis.asp")
+        with tab3:
+            w0.widget_analysis("", instructions_script)
+        
 
     def run_signal_analysis(self, ticker):
         a1.The_Financial_Signal_Processing(ticker)
-        st.subheader("𝄖𝄗𝄘𝄙𝄚 Analysis Done")
 
 
     def capm_cagr(self, tickers):
         a1.CAPM_CAGR().configure_mod(tickers)
-        st.subheader("𝄖𝄗𝄘𝄙𝄚 Analysis Done")
 
 
     def run_fundamental_analysis(self, ticker):
         company_name = f0.company_longName(ticker)
         x = f"{company_name} [{ticker}]"
-        st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Fundamental Analysis · {x} 𝄚𝄙𝄘𝄗𝄖")
-        st.subheader('𝄖'*41)
-                    
         stock = yf.Ticker(ticker)
         info = stock.info
-        
+        st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Fundamental Analysis · {x} 𝄚𝄙𝄘𝄗𝄖")
+        st.subheader('𝄖'*41)        
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Company Profile")
         st.markdown(f"- {info['longName']}")
         st.markdown(f"- Sector : " + info["sector"])
@@ -143,7 +130,6 @@ class Analysis(object):
         st.markdown(f"- Phone : " + info["phone"])
         st.markdown(f"- Address : " + info["address1"] + ", " + info["city"] + ", " + info["zip"] + ", " + info["country"] )
         st.markdown(f"- Website : " + info["website"])
-        
         st.subheader("𝄖𝄗𝄘𝄙 Business Summary")
         st.info(f"- {info['longBusinessSummary']}")
         fundInfo = {
@@ -165,24 +151,19 @@ class Analysis(object):
             }
         fundDF = pd.DataFrame.from_dict(fundInfo, orient="index")
         fundDF = fundDF.rename(columns={0: "Value"})
-        
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Fundamental Info")
         st.table(fundDF)
-
         st.subheader("𝄖𝄗𝄘𝄙𝄚 General Stock Info")
         st.markdown("- Market : " + info["market"])
         st.markdown("- Exchange : " + info["exchange"])
         st.markdown("- Quote Type : " + info["quoteType"])  
-        
         start = datetime.today() - timedelta(2 * 365)
         end = datetime.today()
         df = yf.download(ticker, start, end)
         df = df.reset_index()
-        
         fig = go.Figure(data=go.Scatter(x=df["Date"], y=df["Adj Close"]))
         fig.update_layout(title={"text": "Stock Prices Over Past Two Years", "y": 0.9, "x": 0.5, "xanchor": "center", "yanchor": "top"})
         st.plotly_chart(fig, use_container_width=True)
-
         marketInfo = {
             "Volume": info["volume"],
             "Average Volume": info["averageVolume"],
@@ -255,7 +236,6 @@ class Analysis(object):
         dataMA = yf.download(ticker, start, end)
         df_ma = calcMovingAverage(dataMA, windowSizeMA)
         df_ma = df_ma.reset_index()
-
         figMA = go.Figure()
         figMA.add_trace(
             go.Scatter(
@@ -290,7 +270,6 @@ class Analysis(object):
         figMA.update_layout(legend_title_text="Trend")
         figMA.update_yaxes(tickprefix="$")
         st.plotly_chart(figMA, use_container_width=True)
-
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Moving Average Convergence Divergence (MACD)")
         numYearMACD = st.number_input(
             "Insert period (Year): ",
@@ -304,7 +283,6 @@ class Analysis(object):
         dataMACD = yf.download(ticker, startMACD, endMACD)
         df_macd = calc_macd(dataMACD)
         df_macd = df_macd.reset_index()
-
         figMACD = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.01)
         figMACD.add_trace(go.Scatter(x=df_macd["Date"], y=df_macd["Adj Close"], name="Prices Over Last " + str(numYearMACD) + " Year(s)", ), row=1, col=1)
         figMACD.add_trace(go.Scatter(x=df_macd["Date"], y=df_macd["ema12"], name="EMA 12 Over Last " + str(numYearMACD) + " Year(s)", ), row=1, col=1)
@@ -314,7 +292,6 @@ class Analysis(object):
         figMACD.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1, xanchor="left", x=0))
         figMACD.update_yaxes(tickprefix="$")
         st.plotly_chart(figMACD, use_container_width=True)
-
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Bollinger Band")
         coBoll1, coBoll2 = st.columns(2)
         with coBoll1:
@@ -333,13 +310,11 @@ class Analysis(object):
                 value=20,
                 key=f"{ticker}_5",
             )
-
         startBoll = datetime.today() - timedelta(numYearBoll * 365)
         endBoll = datetime.today()
         dataBoll = yf.download(ticker, startBoll, endBoll)
         df_boll = calcBollinger(dataBoll, windowSizeBoll)
         df_boll = df_boll.reset_index()
-
         figBoll = go.Figure()
         figBoll.add_trace(go.Scatter(x=df_boll["Date"], y=df_boll["bolu"], name="Upper Band"))
         figBoll.add_trace(
@@ -361,17 +336,16 @@ class Analysis(object):
 
     # ------------------------------------------------------------------------------------------ > stage: [ANALYSIS]
 
+
     def run_analysis(self):
         analysis_method = st.sidebar.selectbox("[ 2 ] Select Analysis Method", l0.feature_analysis)
         st.sidebar.write(" *" * 25)
-
 
         if analysis_method == "Analysis Home Page":
             self.analysis_homePage()
 
         if analysis_method == "Asset Overview":
             a1.Single_Asset_Analysis().run()
-            st.subheader("𝄖𝄗𝄘𝄙𝄚 Analysis Done")
 
         if analysis_method == "Ratio Analysis":
             personal_stocks = st.sidebar.text_input("[4] Select Stock List To Run (capitalize & seperated by space)", value="AAPL NVDA TSLA ASML SNOW ALB")
@@ -397,3 +371,9 @@ class Analysis(object):
             st.sidebar.write(" *" * 25)
             if st.sidebar.button("Run Analysis"):
                 self.run_technical_analysis(ticker)
+
+
+
+if __name__ == '__main__':
+    today_stamp = str(datetime.now())[:10]
+    Analysis(today_stamp).run_analysis()

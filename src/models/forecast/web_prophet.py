@@ -78,7 +78,6 @@ class Web_prophet_kyle(object):
         spy_hist = hammerTime.history(period=self.hist).reset_index().set_index('date')
         stock_data = pd.DataFrame(spy_hist[spy_hist['symbol'] == [self.stock][0]])
         del stock_data['symbol']
-
         stock_data.reset_index(inplace=True)
         stock_data.fillna(0.0, inplace=True)
         df = pd.DataFrame(stock_data[["date", "close"]])  # select Date and Price
@@ -90,7 +89,7 @@ class Web_prophet_kyle(object):
 
 
         # create a Prophet model from that data
-        m = Prophet(
+        m1 = Prophet(
             growth='linear',
             n_changepoints=13,
             daily_seasonality=True,
@@ -100,27 +99,26 @@ class Web_prophet_kyle(object):
             uncertainty_samples=1300,
             stan_backend=None,
         )
-        m.fit(df_train)
-        future = m.make_future_dataframe(self.per, freq="D", include_history=True)
-        forecast = m.predict(future)
-        forecast = forecast[["ds", "trend", "yhat_lower", "yhat_upper", "yhat"]]
-
-        fig1 = m.plot(
-            forecast,
+        m1.fit(df_train)
+        future1 = m1.make_future_dataframe(self.per, freq="D", include_history=True)
+        forecast1 = m1.predict(future1)
+        forecast1 = forecast1[["ds", "trend", "yhat_lower", "yhat_upper", "yhat"]]
+        fig1 = m1.plot(
+            forecast1,
             ax=None,
             uncertainty=True,
             plot_cap=True,
             xlabel="Date",
             ylabel="Stock Price",
         )
-        add_changepoints_to_plot(fig1.gca(), m, forecast)
+        add_changepoints_to_plot(fig1.gca(), m1, forecast1)
         plt.title(f"Prophet Model ChangePoints - {self.company} ({self.stock}) - {self.per} Day Forecast")
         plt.legend(["actual", "prediction", "changePoint_line"], loc="best")
         st.pyplot(fig1)
         plt.show()
 
 
-        model_prophet = Prophet(
+        m2 = Prophet(
             growth='linear',
             n_changepoints=13,
             daily_seasonality=True,
@@ -131,30 +129,25 @@ class Web_prophet_kyle(object):
             uncertainty_samples=1300,
             stan_backend=None,
         )
-        model_prophet.add_seasonality(name="monthly", period=1, fourier_order=5)
-        model_prophet.fit(df_train)
-        df_future = model_prophet.make_future_dataframe(periods=self.per, freq="D", include_history=True)
-        df_pred = model_prophet.predict(df_future)
-        
-        # fig2 = model_prophet.plot(
-        #     df_pred,
-        #     ax=None,
-        #     uncertainty=True,
-        #     plot_cap=True,
-        #     xlabel="Date",
-        #     ylabel="Stock Price",
-        # )
-        # plt.show()
-        # st.pyplot(fig2)
-        # plt.show()
-
-        # fig2 = model_prophet.plot_components(df_pred, uncertainty=True)
-        # plt.show()
+        m2.add_seasonality(name="monthly", period=1, fourier_order=5)
+        m2.fit(df_train)
+        future2 = m2.make_future_dataframe(periods=self.per, freq="D", include_history=True)
+        forecast2 = m2.predict(future2)
+        fig2 = m2.plot(
+            forecast2,
+            ax=None,
+            uncertainty=True,
+            plot_cap=True,
+            xlabel="Date",
+            ylabel="Stock Price",
+        )
+        st.pyplot(fig2)
+        # fig2 = m2.plot_components(forecast2, uncertainty=True)
         # st.pyplot(fig2)        
 
 
         # create a Prophet model from that data
-        mp = Prophet(
+        m3 = Prophet(
             growth='linear',
             n_changepoints=13,
             daily_seasonality=True,
@@ -165,34 +158,42 @@ class Web_prophet_kyle(object):
             stan_backend=None,
         )
 
-        mp.fit(df)
-        future1 = mp.make_future_dataframe(self.per, freq="D", include_history=True)
-        forecast1 = mp.predict(future1)
-        forecast1 = forecast1[["ds", "trend", "yhat_lower", "yhat_upper", "yhat"]]
-        
-        fig3 = mp.plot(
-            forecast1,
+        m3.fit(df)
+        future3 = m3.make_future_dataframe(self.per, freq="D", include_history=True)
+        forecast3 = m3.predict(future3)
+        forecast3 = forecast3[["ds", "trend", "yhat_lower", "yhat_upper", "yhat"]]
+        fig3 = m3.plot(
+            forecast3,
             ax=None,
             uncertainty=True,
             plot_cap=True,
             xlabel="Date",
             ylabel="Stock Price",
         )
-        add_changepoints_to_plot(fig1.gca(), mp, forecast1)
+        add_changepoints_to_plot(fig1.gca(), m3, forecast3)
         plt.title(f"Prophet Model ChangePoints - {self.company} ({self.stock}) - {self.per} Day Forecast")
         plt.legend(["actual", "prediction", "changePoint_line"], loc="best")
         st.pyplot(fig3)        
-        plt.show()
 
 
         selected_columns = ["ds", "yhat_lower", "yhat_upper", "yhat"]
-        df_pred = forecast1.loc[:, selected_columns].reset_index(drop=True)
+        future3 = m3.make_future_dataframe(self.per, freq="D", include_history=True)
+        forecast3 = m3.predict(future3)        
+        forecast3 = pd.DataFrame(forecast3)
+        df_pred = forecast3.loc[:, selected_columns].reset_index(drop=True)
         df_test = df_test.merge(df_pred, on=["ds"], how="left")
-        df_test.ds = pd.to_datetime(df_test.ds)
+        df_test['ds'] = pd.to_datetime(df_test['ds'])
         df_test.set_index("ds", inplace=True)
         df_test.columns = ['actual', 'lower_confidence_boundary (95%)', 'upper_confidence_boundary (95%)','prediction']
-        
-        fig, ax = plt.subplots(1, 1)
+
+        fig = m3.plot(
+            forecast3,
+            ax=None,
+            uncertainty=True,
+            plot_cap=True,
+            xlabel="Date",
+            ylabel="Stock Price",
+        )
         ax = sns.lineplot(data=df_test[['actual', 'lower_confidence_boundary (95%)', 'upper_confidence_boundary (95%)','prediction']])
         ax.fill_between(df_test.index, df_test['lower_confidence_boundary (95%)'], df_test['upper_confidence_boundary (95%)'], alpha=0.3)
         ax.set(
@@ -209,16 +210,15 @@ class Web_prophet_kyle(object):
             st.write(f"__> {self.company} · [{self.stock}] - Current Stock Price = ${x}__")
         except Exception:
             pass
-
         try:
-            st.write(f"__> {self.per} · Day Forcast · [{self.company} ({self.stock}) ] = ${round(float(forecast['yhat'].iloc[-1]),2)}__")
+            st.write(f"__> {self.per} · Day Forcast · [{self.company} ({self.stock}) ] = ${round(float(forecast1['yhat'].iloc[-1]),2)}__")
+            st.write(f"__> {self.per} · Day Forcast · [{self.company} ({self.stock}) ] = ${round(float(forecast2['yhat'].iloc[-1]),2)}__")
+            st.write(f"__> {self.per} · Day Forcast · [{self.company} ({self.stock}) ] = ${round(float(forecast3['yhat'].iloc[-1]),2)}__")
         except Exception:
             pass
-
         try:
             analyst_1yr = float(finvizfinance(self.stock).TickerFundament()["Target Price"])
             st.write(f"__> {self.company} · [{self.stock}] - Current Analyst 1yr Price Estimate = {analyst_1yr}__")
         except Exception:
             pass
-
         return

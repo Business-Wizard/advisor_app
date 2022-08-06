@@ -57,13 +57,15 @@ class Forecast(object):
 
 
     def prophet(self, ticker_list):
-        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Prophet ◁ 𝄚𝄙𝄘𝄗𝄖")
-        cols = st.columns(2)
-        with cols[0]:       
-            with st.expander("▷ Details:", expanded=False):         
-                clicked = w0.widget_prophet(prophet_script_1, prophet_script_2, prophet_url)
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Prophet")
+        # cols = st.columns(2)
+        # with cols[0]:       
+        #     with st.expander("▷ Details:", expanded=False):         
+        #         clicked = w0.widget_prophet(prophet_script_1, prophet_script_2, prophet_url)
+
         ender_date = str(datetime.now())[:10]
-        prophet_period_1 = st.sidebar.number_input(label='', min_value=1, max_value=378, value=60)
+        prophet_period_1 = st.sidebar.number_input(label='Forecast Days', min_value=1, max_value=378, value=60)
+
         if st.sidebar.button("[ 6 ] RUN PROPHET FORECAST"):
             if type(self.one_er_many) == str:
                 for r in ticker_list:
@@ -91,7 +93,7 @@ class Forecast(object):
                 
 
     def mc_forecast(self, ticker_list):
-        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Monte Carlo Cholesky ◁ 𝄚𝄙𝄘𝄗𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Monte Carlo Cholesky")
         st.header(f"{'𝄖'*33}")
         forecast_days = st.sidebar.number_input(label='', min_value=1, max_value=378, value=60)
         if st.sidebar.button("Run Monte Carlo Sim Forecast"):
@@ -106,7 +108,7 @@ class Forecast(object):
 
 
     def stocker(self, ticker_list):
-        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Stocker ◁ 𝄚𝄙𝄘𝄗𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Stocker")
         st.header(f"{'𝄖'*33}")        
         stocker_forcast_period = st.sidebar.number_input(label='Forcast Period (DAYS)', min_value=1, max_value=378, value=60)
         e_date = str(datetime.now())[:10]
@@ -119,7 +121,7 @@ class Forecast(object):
 
 
     def regression(self, ticker_list):
-        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Regression ◁ 𝄚𝄙𝄘𝄗𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Regression")
         st.header(f"{'𝄖'*33}")               
         if st.sidebar.button("[ 4 ] RUN REGRESSION FORECAST"):
             days = 5
@@ -147,7 +149,7 @@ class Forecast(object):
 
 
     def sarima(self, ticker_list):
-        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ SARIMA ◁ 𝄚𝄙𝄘𝄗𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ SARIMA")
         st.caption("* Seasonal AutoRegressive Integrated Moving Average")
         st.header(f"{'𝄖'*33}")                      
         if st.sidebar.button("RUN SARIMA FORECAST"):
@@ -161,7 +163,7 @@ class Forecast(object):
                 
 
     def arima(self, ticker_list):
-        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ ARIMA ◁ 𝄚𝄙𝄘𝄗𝄖")
+        st.header("𝄖𝄗𝄘𝄙𝄚 ▷ ARIMA")
         st.caption("* Auto Regression Integrated Moving Average")
         st.header(f"{'𝄖'*33}")
         if st.sidebar.button("[ 4 ] RUN ARIMA FORECAST"):
@@ -191,12 +193,12 @@ class Forecast(object):
     # ------------------------------------------------------------------------------------------ > stage: [FORECAST]
 
     def run_forecast(self):
-        st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Forecasting · 𝄚𝄙𝄘𝄗𝄖 ◾")
-        st.header(f"{' '*25}")
+        st.title("𝄖𝄗𝄘𝄙𝄚 · Forecasting · 𝄚𝄙𝄘𝄗𝄖")
+        st.title(f"{' '*25}")
         
 
         self.one_er_many = "List"
-        model = st.sidebar.selectbox("[ 2 ] Select Model:", l0.feature_forecast)
+        model = st.sidebar.selectbox("Select Model:", l0.feature_forecast)
         personal_stocks = st.sidebar.text_input("Enter Stock", value="AAPL")
         personal_stocks = personal_stocks.split()        
 
@@ -223,3 +225,9 @@ class Forecast(object):
 
         if model == "ARIMA":
             self.arima(personal_stocks)
+
+
+
+if __name__ == '__main__':
+    today_stamp = str(datetime.now())[:10]
+    Forecast(today_stamp).run_forecast()            

@@ -12,7 +12,7 @@ class CAPM_CAGR(object):
     
     
     def __init__(self):
-        st.subheader("𝄖𝄗𝄗𝄘𝄘𝄘𝄙𝄙𝄙𝄙 Ratio · Analysis [CAPM & CAGR] 𝄙𝄙𝄙𝄙𝄘𝄘𝄘𝄗𝄗𝄖")
+        st.subheader("𝄖𝄗𝄘𝄙𝄚 Ratio · Analysis · [CAPM & CAGR] 𝄚𝄙𝄘𝄗𝄖")
 
 
     def import_stock_data(self, tickers, start="2010-1-1", end=datetime.today().strftime("%Y-%m-%d")):

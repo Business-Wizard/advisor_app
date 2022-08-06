@@ -60,7 +60,6 @@ def widget_online_resource(key):
     st.write(f"{' '*25}")
     st.markdown("__Online Resources__")
     st.caption(f" - {key}")
-    st.write(f"{'_'*25}")
 
 
 def widget_basic(head, subhead, key):
@@ -89,7 +88,7 @@ def widget_analysis(subhead, key):
     st.write(f"{' '*25}")
     
 def widget_analysis2(subhead, key):
-    st.markdown(f"{subhead}")
+    st.markdown(f"__{subhead}__")
     st.caption(f"{key}")
     st.write(f"{' '*25}")
 
