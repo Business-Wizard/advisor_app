@@ -53,11 +53,9 @@ from src.tools import widgets as w0
 
 class Credentials(object):
 
-
     def __init__(self, today_stamp):
         self.today_stamp = today_stamp
         self.authUser = False
-
 
     def check_password(self):
         try:
@@ -70,7 +68,6 @@ class Credentials(object):
         except:
             pass
 
-
         def password_entered():
             st.session_state.username = list(st.secrets["passwords"].keys())[0]
             st.session_state.password = list(st.secrets["passwords"].values())[0]
@@ -82,7 +79,6 @@ class Credentials(object):
                 del st.session_state["username"]
             else:
                 st.session_state["password_correct"] = False
-
 
         if "password_correct" not in st.session_state:
             st.title(f" ~ 4M ~  \n\- Today Date: [{self.today_stamp}]\n")
@@ -108,56 +104,32 @@ class Credentials(object):
             return self.authUser
 
 
+class Home(object):
+
+    def __init__(self, today_stamp):
+        self.today_stamp = str(today_stamp)[:10]        
+        st.header("𝄖𝄗𝄘𝄙𝄚 · Home · ")
+
+
+    def run_home(self):
+        tab1, tab2 = st.tabs(["𝄖𝄗𝄘𝄙𝄚 Disclosure 𝄚𝄙𝄘𝄗𝄖", "𝄖𝄗𝄘𝄙𝄚 MISC 𝄚𝄙𝄘𝄗𝄖"])
+        with tab1:
+            w0.home_disclosure()
+
 
 def page_login(today_stamp):
     authUser = Credentials(today_stamp).check_password()
     return authUser
 
 
-
-
-
-
-
-class Home(object):
-
-
-    def __init__(self, today_stamp):
-        self.today_stamp = str(today_stamp)[:10]
-        
-        st.header("◾ 𝄖𝄗𝄘𝄙𝄚 · Home · 𝄚𝄙𝄘𝄗𝄖 ◾")
-        st.header(f"{' '*25}")
-        st.header(f"{' '*25}")
-
-
-    def run_home(self):
-
-        cols = st.columns(3)
-        with cols[0]:
-            my_expander = st.expander("𝄖𝄗𝄘𝄙𝄚 Disclosures 𝄚𝄙𝄘𝄗𝄖", expanded=False)
-            with my_expander:
-                clicked = w0.home_disclosure()
-
-
-
-
-
 if __name__ == '__main__':    
+    st.title("𝄗"*24)
     st.title(f"✪ 𝄚𝄚𝄚𝄚𝄚 【 · Invest · 4m · 】 𝄚𝄚𝄚𝄚𝄚 ✪")
-    st.title(" ")
-
+    st.title("𝄗"*24)
+    
     today_stamp = str(datetime.now())[:10]
-    page_login(today_stamp)    
 
-    if page_login == True:
+    if page_login(today_stamp) == True:
         Home(today_stamp).run_home()
 
 st.markdown("<a href='#linkto_top'>Link to top</a>", unsafe_allow_html=True)
-
-
-
-# 𝄖  𝄗  𝄘  𝄙  𝄚
-# 𝄖𝄗𝄘𝄙𝄚 xxx 𝄚𝄙𝄘𝄗𝄖
-# 𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 xxx 𝄚𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖
-# 𝄖𝄖𝄖𝄖𝄖𝄗𝄗𝄗𝄗𝄘𝄘𝄘𝄙𝄙𝄚 xxx 𝄚𝄙𝄙𝄘𝄘𝄘𝄗𝄗𝄗𝄗𝄖𝄖𝄖𝄖𝄖
-# 𝄖𝄗𝄗𝄘𝄘𝄘𝄙𝄙𝄙𝄙𝄚𝄚𝄚𝄚𝄚 xxx · xxx 𝄚𝄚𝄚𝄚𝄚𝄙𝄙𝄙𝄙𝄘𝄘𝄘𝄗𝄗𝄖

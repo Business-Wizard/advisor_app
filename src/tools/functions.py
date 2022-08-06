@@ -73,8 +73,11 @@ def display_as_percent(val):
 
 
 def company_longName(ticker):
-    d = Ticker(ticker).quote_type
-    return list(d.values())[0]["longName"]
+    try:
+        d = Ticker(ticker).quote_type
+        return list(d.values())[0]["longName"]
+    except Exception:
+        return 'xxx'
 
 
 def time_fixer(obj):
