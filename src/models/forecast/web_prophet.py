@@ -176,32 +176,32 @@ class Web_prophet_kyle(object):
         st.pyplot(fig3)        
 
 
-        selected_columns = ["ds", "yhat_lower", "yhat_upper", "yhat"]
-        future3 = m3.make_future_dataframe(self.per, freq="D", include_history=True)
-        forecast3 = m3.predict(future3)        
-        forecast3 = pd.DataFrame(forecast3)
-        df_pred = forecast3.loc[:, selected_columns].reset_index(drop=True)
-        df_test = df_test.merge(df_pred, on=["ds"], how="left")
-        df_test['ds'] = pd.to_datetime(df_test['ds'])
-        df_test.set_index("ds", inplace=True)
-        df_test.columns = ['actual', 'lower_confidence_boundary (95%)', 'upper_confidence_boundary (95%)','prediction']
+        # selected_columns = ["ds", "yhat_lower", "yhat_upper", "yhat"]
+        # future3 = m3.make_future_dataframe(self.per, freq="D", include_history=True)
+        # forecast3 = m3.predict(future3)        
+        # forecast3 = pd.DataFrame(forecast3)
+        # df_pred = forecast3.loc[:, selected_columns].reset_index(drop=True)
+        # df_test = df_test.merge(df_pred, on=["ds"], how="left")
+        # df_test['ds'] = pd.to_datetime(df_test['ds'])
+        # df_test.set_index("ds", inplace=True)
+        # df_test.columns = ['actual', 'lower_confidence_boundary (95%)', 'upper_confidence_boundary (95%)','prediction']
 
-        fig = m3.plot(
-            forecast3,
-            ax=None,
-            uncertainty=True,
-            plot_cap=True,
-            xlabel="Date",
-            ylabel="Stock Price",
-        )
-        ax = sns.lineplot(data=df_test[['actual', 'lower_confidence_boundary (95%)', 'upper_confidence_boundary (95%)','prediction']])
-        ax.fill_between(df_test.index, df_test['lower_confidence_boundary (95%)'], df_test['upper_confidence_boundary (95%)'], alpha=0.3)
-        ax.set(
-            title=f"{self.company} [{self.stock}] - actual vs. predicted",
-            xlabel="Date",
-            ylabel="Price ($)",
-        )
-        st.pyplot(fig)
+        # fig = m3.plot(
+        #     forecast3,
+        #     ax=None,
+        #     uncertainty=True,
+        #     plot_cap=True,
+        #     xlabel="Date",
+        #     ylabel="Stock Price",
+        # )
+        # ax = sns.lineplot(data=df_test[['actual', 'lower_confidence_boundary (95%)', 'upper_confidence_boundary (95%)','prediction']])
+        # ax.fill_between(df_test.index, df_test['lower_confidence_boundary (95%)'], df_test['upper_confidence_boundary (95%)'], alpha=0.3)
+        # ax.set(
+        #     title=f"{self.company} [{self.stock}] - actual vs. predicted",
+        #     xlabel="Date",
+        #     ylabel="Price ($)",
+        # )
+        # st.pyplot(fig)
 
 
         try:
@@ -213,7 +213,6 @@ class Web_prophet_kyle(object):
         try:
             st.write(f"__> {self.per} · Day Forcast · [{self.company} ({self.stock}) ] = ${round(float(forecast1['yhat'].iloc[-1]),2)}__")
             st.write(f"__> {self.per} · Day Forcast · [{self.company} ({self.stock}) ] = ${round(float(forecast2['yhat'].iloc[-1]),2)}__")
-            st.write(f"__> {self.per} · Day Forcast · [{self.company} ({self.stock}) ] = ${round(float(forecast3['yhat'].iloc[-1]),2)}__")
         except Exception:
             pass
         try:

@@ -110,11 +110,12 @@ class Home(object):
         self.today_stamp = str(today_stamp)[:10]        
         st.header("𝄖𝄗𝄘𝄙𝄚 · Home · ")
 
-
     def run_home(self):
         tab1, tab2 = st.tabs(["𝄖𝄗𝄘𝄙𝄚 Disclosure 𝄚𝄙𝄘𝄗𝄖", "𝄖𝄗𝄘𝄙𝄚 MISC 𝄚𝄙𝄘𝄗𝄖"])
         with tab1:
             w0.home_disclosure()
+        with tab2:
+            st.write('...')
 
 
 def page_login(today_stamp):
