@@ -21,7 +21,29 @@ def home_widget_tools(subhead, category_1, key_1):
     
 def home_disclosure():
     st.write(f"{s0.financial_disclosure}")
+
     
+def home_summary_in_brief():
+    st.subheader('10,000 ft Overview:')
+    st.write(f"{s0.overview_home}")
+
+
+def home_navigation():
+    st.subheader('How To Operate & Navigate This App:')
+    st.write(f"{s0.how_to_operate_app}") 
+
+
+def home_section_index():
+    st.subheader('Section Index:')
+    st.write(f"{s0.section_summary}")
+
+
+def home_focal_concepts():
+    st.header('')
+    st.subheader('Data Scientist Specializations:')
+    st.write(f"{s0.tools_home_1}")
+    st.subheader('Financial Analysis Application:')
+    st.write(f"{s0.tools_home_2}")         
 
 
 # - - - - - SNAPSHOT PAGE - - - - -
