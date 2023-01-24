@@ -45,7 +45,7 @@ def get_key(val):
 class Web_prophet_kyle(object):
 
 
-    def __init__(self, stock, ender_date, per=360, hist="2y"):
+    def __init__(self, stock, ender_date='2023-01-01', per=360, hist="2y"):
         """
         forecast the given ticker (stock) period days into the future (from today)
         ---------inputs----------

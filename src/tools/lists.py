@@ -78,7 +78,7 @@ feature_analysis = [
     "Asset Overview",
     "Ratio Analysis",
     "Financial Signal",
-    "Fundamental Analysis",
+    # "Fundamental Analysis",
     "Technical Analysis",
 ]
 feature_forecast = [
