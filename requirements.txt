@@ -1,6 +1,6 @@
 cufflinks==0.17.3
-finviz==1.4.2
-finvizfinance==0.9.10
+finviz==1.4.4
+finvizfinance==0.14.4
 ipython==7.31.1
 matplotlib==3.5.1
 mplfinance==0.12.7a12
