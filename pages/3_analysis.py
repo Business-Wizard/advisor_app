@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime, timedelta, date
 from yahooquery import Ticker as yq_Ticker
 import yfinance as yf
-from yfinance import Ticker
+from yahooquery import Ticker
 from src.data import yahoo_fin_stock_info as si
 import src.data.yahoo_fin_stock_info as SI
 import yahoo_fin.news as news
@@ -119,8 +119,8 @@ class Analysis(object):
     def run_fundamental_analysis(self, ticker):
         company_name = f0.company_longName(ticker)
         x = f"{company_name} [{ticker}]"
-        stock = yf.Ticker(ticker)
-        info = stock.info
+        stock = Ticker(ticker)
+        info = stock.asset_profile
         st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Fundamental Analysis · {x} 𝄚𝄙𝄘𝄗𝄖")
         st.subheader('𝄖'*41)        
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Company Profile")

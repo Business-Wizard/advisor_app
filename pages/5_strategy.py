@@ -11,19 +11,19 @@ import src.models.strategy as s1
 from src.tools import functions as f0
 from src.tools import lists as l0
 
-plt.style.use("ggplot")
-sm, med, lg = "20", "25", "30"
-plt.rcParams["font.size"] = sm  # controls default text sizes
-plt.rc("axes", titlesize=med)  # fontsize of the axes title
-plt.rc("axes", labelsize=med)  # fontsize of the x & y labels
-plt.rc("xtick", labelsize=sm)  # fontsize of the tick labels
-plt.rc("ytick", labelsize=sm)  # fontsize of the tick labels
-plt.rc("legend", fontsize=sm)  # legend fontsize
-plt.rc("figure", titlesize=lg)  # fontsize of the figure title
-plt.rc("axes", linewidth=2)  # linewidth of plot lines
-plt.rcParams["figure.figsize"] = [15, 13]
-plt.rcParams["figure.dpi"] = 113
-plt.rcParams["axes.facecolor"] = "silver"
+# plt.style.use("ggplot")
+# sm, med, lg = "20", "25", "30"
+# plt.rcParams["font.size"] = sm  # controls default text sizes
+# plt.rc("axes", titlesize=med)  # fontsize of the axes title
+# plt.rc("axes", labelsize=med)  # fontsize of the x & y labels
+# plt.rc("xtick", labelsize=sm)  # fontsize of the tick labels
+# plt.rc("ytick", labelsize=sm)  # fontsize of the tick labels
+# plt.rc("legend", fontsize=sm)  # legend fontsize
+# plt.rc("figure", titlesize=lg)  # fontsize of the figure title
+# plt.rc("axes", linewidth=2)  # linewidth of plot lines
+# plt.rcParams["figure.figsize"] = [15, 13]
+# plt.rcParams["figure.dpi"] = 113
+# plt.rcParams["axes.facecolor"] = "silver"
 
 
 class Strategy(object):

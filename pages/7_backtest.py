@@ -17,20 +17,20 @@ from src.models.backtest.optimal_double_mavg import Optimal_Double_Mavg_Crossove
 from src.models.backtest.optimal_sma import Optimal_SMA
 
 import matplotlib.pyplot as plt
-pd.plotting.register_matplotlib_converters()
-plt.style.use("ggplot")
-sm, med, lg = "20", "25", "30"
-plt.rcParams["font.size"] = sm                                        # controls default text sizes
-plt.rc("axes", titlesize=med)                                         # fontsize of the axes title
-plt.rc("axes", labelsize=med)                                         # fontsize of the x & y labels
-plt.rc("xtick", labelsize=sm)                                         # fontsize of the tick labels
-plt.rc("ytick", labelsize=sm)                                         # fontsize of the tick labels
-plt.rc("legend", fontsize=sm)                                         # legend fontsize
-plt.rc("figure", titlesize=lg)                                        # fontsize of the figure title
-plt.rc("axes", linewidth=2)                                           # linewidth of plot lines
-plt.rcParams["figure.figsize"] = [10, 7]
-plt.rcParams["figure.dpi"] = 100
-plt.rcParams["axes.facecolor"] = "silver"
+# pd.plotting.register_matplotlib_converters()
+# plt.style.use("ggplot")
+# sm, med, lg = "20", "25", "30"
+# plt.rcParams["font.size"] = sm                                        # controls default text sizes
+# plt.rc("axes", titlesize=med)                                         # fontsize of the axes title
+# plt.rc("axes", labelsize=med)                                         # fontsize of the x & y labels
+# plt.rc("xtick", labelsize=sm)                                         # fontsize of the tick labels
+# plt.rc("ytick", labelsize=sm)                                         # fontsize of the tick labels
+# plt.rc("legend", fontsize=sm)                                         # legend fontsize
+# plt.rc("figure", titlesize=lg)                                        # fontsize of the figure title
+# plt.rc("axes", linewidth=2)                                           # linewidth of plot lines
+# plt.rcParams["figure.figsize"] = [10, 7]
+# plt.rcParams["figure.dpi"] = 100
+# plt.rcParams["axes.facecolor"] = "silver"
 
 
 
@@ -48,7 +48,7 @@ class Backtest(object):
         method = st.sidebar.selectbox("[ 2 ] SELECT METHOD: ", ["Single Ticker", "Portfolio"])
 
         if method == "Single Ticker":
-            mode = st.sidebar.selectbox("[ 3 ] SELECT MODE:", ["Pyfolio", "Strategy Comparrison"])
+            mode = st.sidebar.selectbox("[ 3 ] SELECT MODE:", ["Strategy Comparrison"]) #"Pyfolio"
 
 
             if mode == "Pyfolio":
