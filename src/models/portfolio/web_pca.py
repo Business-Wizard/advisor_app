@@ -50,11 +50,11 @@ class The_PCA_Analysis(object):
         self.rs = self.prices.apply(np.log).diff(1)     
 
 
-        # if self.graph_it:
-        #     fig, ax = plt.subplots()
-        #     ax = self.rs.plot(legend=0,grid=True,title=f"Daily Returns",)
-        #     plt.tight_layout()
-        #     st.pyplot()
+        if self.graph_it:
+            fig, ax = plt.subplots()
+            ax = self.rs.plot(legend=0,grid=True,title=f"Daily Returns",)
+            plt.tight_layout()
+            st.pyplot()
 
 
         if self.graph_it:
@@ -69,15 +69,15 @@ class The_PCA_Analysis(object):
         pc1 = pd.Series(index=self.rs.columns, data=pca.components_[0])
 
 
-        # fig, ax = plt.subplots()
-        # pc1.plot(
-        #     
-        #     xticks=[],
-        #     grid=True,
-        #     title=f"First Principal Component",
-        # )
-        # plt.tight_layout()
-        # st.pyplot()
+        fig, ax = plt.subplots()
+        pc1.plot(
+            
+            xticks=[],
+            grid=True,
+            title=f"First Principal Component",
+        )
+        plt.tight_layout()
+        st.pyplot()
 
 
         weights = abs(pc1) / sum(abs(pc1))
@@ -142,28 +142,33 @@ class The_PCA_Analysis(object):
             myrs = (self.rs[list(pc1.nsmallest(5).index) + list(pc1.nlargest(5).index)] * ws).mean(1)
 
 
-            # fig, ax = plt.subplots()
-            # myrs.cumsum().apply(np.exp).plot(
-            #     
-            #     grid=True,
-            #     linewidth=3,
-            #     title=f"PCA Portfolio (5 Most & 5 Least Impactful) vs The Round 5 Stocks",
-            # )
-            # prices["2020":].apply(np.log).diff(1).cumsum().apply(np.exp).plot(
-            #     grid=True, linewidth=3
-            # )
-            # plt.legend(["PCA Selection", "SP500_Index"])
-            # plt.tight_layout()
-            # st.pyplot()
+            fig, ax = plt.subplots()
+            myrs.cumsum().apply(np.exp).plot(
+                
+                grid=True,
+                linewidth=3,
+                title=f"PCA Portfolio (5 Most & 5 Least Impactful) vs The Round 5 Stocks",
+            )
+            prices["2020":].apply(np.log).diff(1).cumsum().apply(np.exp).plot(
+                grid=True, linewidth=3
+            )
+            plt.legend(["PCA Selection", "SP500_Index"])
+            plt.tight_layout()
+            st.pyplot()
 
 
             st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Below Are The Principal Components From The Ticker List:")
             st.write(f"- LARGEST PCA VALUES' Returns (top {len(pc1.nlargest(self.x_factor))}) == [{round(largest_ret,2)}]")
+            st.text(pc1.nlargest(self.x_factor).index)
             st.write(f"- SMALLEST PCA VALUES' Returns (bottom {len(pc1.nsmallest(self.x_factor))}) == [{round(smallest_ret,2)}]")
+            st.text(pc1.nsmallest(self.x_factor).index)
             st.write(f"- S&P500 Return == [{round(spy500_ret,2)}]")
+
             
         else:
             st.subheader(f"Below Are The Principal Components From The Ticker List:")
             st.write(f"- LARGEST PCA VALUES' Returns (top {len(pc1.nlargest(self.x_factor))})  == [{round(largest_ret,2)}]")
+            st.text(pc1.nlargest(self.x_factor).index)
             st.write(f"- SMALLEST PCA VALUES' Returns (bottom {len(pc1.nsmallest(self.x_factor))}) == [{round(smallest_ret,2)}]")
+            st.text(pc1.nsmallest(self.x_factor).index)
             st.write(f"- S&P500 Return == [{round(spy500_ret,2)}]")
