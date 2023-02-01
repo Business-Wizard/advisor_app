@@ -159,16 +159,16 @@ class The_PCA_Analysis(object):
 
             st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Below Are The Principal Components From The Ticker List:")
             st.write(f"- LARGEST PCA VALUES' Returns (top {len(pc1.nlargest(self.x_factor))}) == [{round(largest_ret,2)}]")
-            st.text(pc1.nlargest(self.x_factor).index)
+            st.text(self.rs[pc1.nlargest(self.x_factor).index])
             st.write(f"- SMALLEST PCA VALUES' Returns (bottom {len(pc1.nsmallest(self.x_factor))}) == [{round(smallest_ret,2)}]")
-            st.text(pc1.nsmallest(self.x_factor).index)
+            st.text(self.rs[pc1.nsmallest(self.x_factor).index])
             st.write(f"- S&P500 Return == [{round(spy500_ret,2)}]")
 
             
         else:
             st.subheader(f"Below Are The Principal Components From The Ticker List:")
             st.write(f"- LARGEST PCA VALUES' Returns (top {len(pc1.nlargest(self.x_factor))})  == [{round(largest_ret,2)}]")
-            st.text(pc1.nlargest(self.x_factor).index)
+            st.text(self.rs[pc1.nlargest(self.x_factor).index])
             st.write(f"- SMALLEST PCA VALUES' Returns (bottom {len(pc1.nsmallest(self.x_factor))}) == [{round(smallest_ret,2)}]")
-            st.text(pc1.nsmallest(self.x_factor).index)
+            st.text(self.rs[pc1.nsmallest(self.x_factor).index])
             st.write(f"- S&P500 Return == [{round(spy500_ret,2)}]")
