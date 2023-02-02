@@ -121,9 +121,15 @@ class The_Random_Forest(object):
 
 
         intermediate_dictionary = {'features':f9, 'importances':i9}
-        pandas_dataframe = pd.DataFrame(intermediate_dictionary)
-        st.dataframe(pandas_dataframe)
-       
+        pandas_dataframe = pd.DataFrame(intermediate_dictionary).sort_values('importances')
+        string = ""
+        for i in list(pandas_dataframe['features']):
+            string += (i + " ")
+
+        st.subheader("𝄖𝄗𝄘𝄙𝄚 Feature Importances")
+        st.dataframe(pandas_dataframe.set_index('features'))
+        st.text(string)
+        
 
         fig, ax = plt.subplots()
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Feature Importance Plot")
