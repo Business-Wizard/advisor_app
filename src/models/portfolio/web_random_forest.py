@@ -114,14 +114,19 @@ class The_Random_Forest(object):
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Feature ranking:")
         f9 = []
         i9 = []
+        c1 = 0.0
         for f in range(n):
-            st.write("%d. %s (%f)" % (f + 1, features[f], importances[indices[f]]))
-            f9.append(features[f])
-            i9.append(importances[indices[f]])
+            c1 += float(importances[indices[f]])
+            if c1 < 0.9:
+                st.write("%d. %s (%f)" % (f + 1, features[f], importances[indices[f]]))
+                f9.append(features[f])
+                i9.append(importances[indices[f]])
 
 
         intermediate_dictionary = {'features':f9, 'importances':i9}
         pandas_dataframe = pd.DataFrame(intermediate_dictionary).sort_values('importances', ascending=False)
+
+
         string = ""
         for i in list(pandas_dataframe['features']):
             string += (i + " ")
