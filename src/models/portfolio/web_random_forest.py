@@ -119,7 +119,7 @@ class The_Random_Forest(object):
             f9.append(features[f])
             i9.append(importances[indices[f]])
 
-        df_9 = pd.DataFrame.from_dict(dict.zip(f9, i9), orient='index')
+        df_9 = pd.DataFrame(dict.zip(f9, i9))
         st.dataframe(df_9)
        
 
