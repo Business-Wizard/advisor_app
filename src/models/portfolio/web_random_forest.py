@@ -112,8 +112,16 @@ class The_Random_Forest(object):
         features = list(self.component_df.columns[indices])
 
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Feature ranking:")
+        f9 = []
+        i9 = []
         for f in range(n):
             st.write("%d. %s (%f)" % (f + 1, features[f], importances[indices[f]]))
+            f9.append(features[f])
+            i9.append(importances[indices[f]])
+
+        df_9 = pd.DataFrame.from_dict(dict.zip(f9, i9), orient='index')
+        st.dataframe(df_9)
+       
 
         fig, ax = plt.subplots()
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Feature Importance Plot")
