@@ -119,8 +119,10 @@ class The_Random_Forest(object):
             f9.append(features[f])
             i9.append(importances[indices[f]])
 
-        df_9 = pd.DataFrame(dict.zip(f9, i9))
-        st.dataframe(df_9)
+
+        intermediate_dictionary = {'features':f9, 'importances':i9}
+        pandas_dataframe = pd.DataFrame(intermediate_dictionary)
+        st.dataframe(pandas_dataframe)
        
 
         fig, ax = plt.subplots()
