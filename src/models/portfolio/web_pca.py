@@ -52,14 +52,16 @@ class The_PCA_Analysis(object):
 
         if self.graph_it:
             fig, ax = plt.subplots()
-            ax = self.rs.plot(legend=0,grid=True,title=f"Daily Returns",)
+            ax = self.rs.plot(legend=0, grid=True, title="Daily Returns")
             plt.tight_layout()
             st.pyplot()
 
 
         if self.graph_it:
             fig, ax = plt.subplots()
-            (self.rs.cumsum().apply(np.exp)).plot(legend=0,grid=True,title=f"Cumulative Returns",)
+            (self.rs.cumsum().apply(np.exp)).plot(
+                legend=0, grid=True, title="Cumulative Returns"
+            )
             plt.tight_layout()
             plt.legend()
             st.pyplot()
@@ -70,12 +72,7 @@ class The_PCA_Analysis(object):
 
 
         fig, ax = plt.subplots()
-        pc1.plot(
-            
-            xticks=[],
-            grid=True,
-            title=f"First Principal Component",
-        )
+        pc1.plot(xticks=[], grid=True, title="First Principal Component")
         plt.tight_layout()
         st.pyplot()
 
@@ -87,7 +84,10 @@ class The_PCA_Analysis(object):
 
         if self.graph_it:
             fig, ax = plt.subplots()
-            myrs_cumsum.plot(grid=True,title=f"Cumulative Daily Returns of 1st Principal Component Stock",)
+            myrs_cumsum.plot(
+                grid=True,
+                title="Cumulative Daily Returns of 1st Principal Component Stock",
+            )
             st.pyplot()
 
 
@@ -120,8 +120,8 @@ class The_PCA_Analysis(object):
         plt.legend(["PCA Selection", "SP500_Index"])
         plt.tight_layout()
         st.pyplot()
-        
-        
+
+
         fig, ax = plt.subplots()
         ws = [-1,] * 10 + [1,] * 10
         myrs = self.rs[pc1.nsmallest(self.x_factor).index].mean(1)
@@ -144,10 +144,9 @@ class The_PCA_Analysis(object):
 
             fig, ax = plt.subplots()
             myrs.cumsum().apply(np.exp).plot(
-                
                 grid=True,
                 linewidth=3,
-                title=f"PCA Portfolio (5 Most & 5 Least Impactful) vs The Round 5 Stocks",
+                title="PCA Portfolio (5 Most & 5 Least Impactful) vs The Round 5 Stocks",
             )
             prices["2020":].apply(np.log).diff(1).cumsum().apply(np.exp).plot(
                 grid=True, linewidth=3
@@ -157,18 +156,13 @@ class The_PCA_Analysis(object):
             st.pyplot()
 
 
-            st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Below Are The Principal Components From The Ticker List:")
+            st.subheader("𝄖𝄗𝄘𝄙𝄚 Below Are The Principal Components From The Ticker List:")
             st.write(f"- LARGEST PCA VALUES' Returns (top {len(pc1.nlargest(self.x_factor))}) == [{round(largest_ret,2)}]")
-            st.text(list(self.rs[pc1.nlargest(self.x_factor).index].columns))
-            st.write(f"- SMALLEST PCA VALUES' Returns (bottom {len(pc1.nsmallest(self.x_factor))}) == [{round(smallest_ret,2)}]")
-            st.text(list(self.rs[pc1.nsmallest(self.x_factor).index].columns))
-            st.write(f"- S&P500 Return == [{round(spy500_ret,2)}]")
-
-            
         else:
-            st.subheader(f"Below Are The Principal Components From The Ticker List:")
+            st.subheader("Below Are The Principal Components From The Ticker List:")
             st.write(f"- LARGEST PCA VALUES' Returns (top {len(pc1.nlargest(self.x_factor))})  == [{round(largest_ret,2)}]")
-            st.text(list(self.rs[pc1.nlargest(self.x_factor).index].columns))
-            st.write(f"- SMALLEST PCA VALUES' Returns (bottom {len(pc1.nsmallest(self.x_factor))}) == [{round(smallest_ret,2)}]")
-            st.text(list(self.rs[pc1.nsmallest(self.x_factor).index].columns))
-            st.write(f"- S&P500 Return == [{round(spy500_ret,2)}]")
+
+        st.text(list(self.rs[pc1.nlargest(self.x_factor).index].columns))
+        st.write(f"- SMALLEST PCA VALUES' Returns (bottom {len(pc1.nsmallest(self.x_factor))}) == [{round(smallest_ret,2)}]")
+        st.text(list(self.rs[pc1.nsmallest(self.x_factor).index].columns))
+        st.write(f"- S&P500 Return == [{round(spy500_ret,2)}]")

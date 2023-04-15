@@ -68,9 +68,9 @@ class Home(object):
 
 if __name__ == '__main__':    
     # st.title("𝄗"*28)
-    st.title(f"✪ 𝄚𝄚𝄚𝄚𝄚𝄚𝄚 【 · Invest · 4m · 】 𝄚𝄚𝄚𝄚𝄚𝄚𝄚 ✪")
+    st.title("✪ 𝄚𝄚𝄚𝄚𝄚𝄚𝄚 【 · Invest · 4m · 】 𝄚𝄚𝄚𝄚𝄚𝄚𝄚 ✪")
     st.title("𝄗"*28)
-    
+
     entry = True
     if entry:
         Home(str(datetime.now())[:10]).run_home()

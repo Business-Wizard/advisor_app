@@ -26,7 +26,7 @@ class MonteCarloCholesky(object):
             self.saveAdvisor.mkdir(parents=True)
 
 
-    def import_stock_data(self, tickers, saveName="xxx", start="2010-1-1", end=datetime.today().strftime("%Y-%m-%d"),):        
+    def import_stock_data(self, tickers, saveName="xxx", start="2010-1-1", end=datetime.now().strftime("%Y-%m-%d")):        
         y = Ticker(
             tickers, 
                 asynchronous=True,
@@ -71,8 +71,7 @@ class MonteCarloCholesky(object):
 
 
     def get_tickers(self, data):
-        tickers = [i for i in data.columns]
-        return tickers
+        return list(data.columns)
 
 
     def probs_find(self, predicted, higherthan, ticker=None, on="value"):
@@ -84,7 +83,7 @@ class MonteCarloCholesky(object):
         3. on: 'return' or 'value', the return of the stock or the final value of stock for every simulation over the time specified
         4. ticker: specific ticker to compute probability for
         """
-        if ticker == None:
+        if ticker is None:
             if on == "return":
                 predicted0 = predicted.iloc[0, 0]
                 predicted = predicted.iloc[-1]
@@ -108,33 +107,31 @@ class MonteCarloCholesky(object):
 
             else:
                 st.write("'on' must be either value or return")
+
+        elif on == "return":
+            predicted = predicted[predicted["ticker"] == ticker]
+            predicted0 = predicted.iloc[0, 0]
+            predicted = predicted.iloc[-1]
+            predList = list(predicted)
+            over = [
+                (i * 100) / predicted0
+                for i in predList
+                if ((i - predicted0) * 100) / predicted0 >= higherthan
+            ]
+            less = [
+                (i * 100) / predicted0
+                for i in predList
+                if ((i - predicted0) * 100) / predicted0 < higherthan
+            ]
+
+        elif on == "value":
+            predicted = predicted.iloc[-1]
+            predList = list(predicted)
+            over = [i for i in predList if i >= higherthan]
+            less = [i for i in predList if i < higherthan]
 
         else:
-
-            if on == "return":
-                predicted = predicted[predicted["ticker"] == ticker]
-                predicted0 = predicted.iloc[0, 0]
-                predicted = predicted.iloc[-1]
-                predList = list(predicted)
-                over = [
-                    (i * 100) / predicted0
-                    for i in predList
-                    if ((i - predicted0) * 100) / predicted0 >= higherthan
-                ]
-                less = [
-                    (i * 100) / predicted0
-                    for i in predList
-                    if ((i - predicted0) * 100) / predicted0 < higherthan
-                ]
-
-            elif on == "value":
-                predicted = predicted.iloc[-1]
-                predList = list(predicted)
-                over = [i for i in predList if i >= higherthan]
-                less = [i for i in predList if i < higherthan]
-
-            else:
-                st.write("'on' must be either value or return")
+            st.write("'on' must be either value or return")
         return len(over) / (len(over) + len(less))
 
 
@@ -219,12 +216,11 @@ class MonteCarloCholesky(object):
                 st.write(f"* Probability of Breakeven: {self.probs_find(pd.DataFrame(price_list), 0, on='return')}")
                 st.write(' '*25)
 
-        simulatedDF = pd.concat(simulatedDF)
-        return simulatedDF
+        return pd.concat(simulatedDF)
 
 
     def market_data_combination(self, tickers, data, mark_ticker="^GSPC", start="2010-1-1"):
-        ticks = [col for col in data.columns]
+        ticks = list(data.columns)
 
         if mark_ticker in ticks:
             ann_return = np.exp(self.log_returns(data).mean() * 252).values - 1
@@ -284,7 +280,7 @@ class MonteCarloCholesky(object):
 
     def montecarlo_sharpe_optimal_portfolio(self, tickers, trials=13000, end_date=None, start_date="2020-1-1", riskfree=0.025, plot_eff=True,):
 
-        if end_date == None:
+        if end_date is None:
             end_date = self.report_date
             # end_date = datetime.today().strftime("%Y-%m-%d")
 
@@ -310,29 +306,28 @@ class MonteCarloCholesky(object):
         weightSharpe = allWeights[pointsharpe]
         x_sharpe = allVolatility[pointsharpe]
         y_sharpe = allReturns[pointsharpe]
-        
+
         maxret = allReturns.max()
         pointret = allReturns.argmax()
         weightRet = allWeights[pointret]
-        x_ret = allVolatility[pointret]
-        y_ret = allReturns[pointret]
-
         if plot_eff == True:
             st.caption('_'*25)
-            st.subheader(f"__𝄖𝄗𝄘𝄙𝄚 Graphic Simulation Of Portfolios__")
-                     
+            st.subheader("__𝄖𝄗𝄘𝄙𝄚 Graphic Simulation Of Portfolios__")
+
             fig, ax = plt.subplots(figsize=(14, 9))
             plt.scatter(allVolatility, allReturns, c=allSharpeValues, cmap="plasma")
             plt.colorbar(label="Sharpe Ratio")
             plt.xlabel("Volatility")
             plt.ylabel("Expected Return")
             plt.scatter(x_sharpe, y_sharpe, c="black")
+            x_ret = allVolatility[pointret]
+            y_ret = allReturns[pointret]
+
             plt.scatter(x_ret, y_ret)
             st.pyplot(fig)
 
-        optim_dic = []
-        for i in range(len(tickers)):
-            optim_dic.append({"ticker": tickers[i], "Weight": weightSharpe[i] * 100})
-
-        fin = pd.DataFrame(optim_dic)
-        return fin
+        optim_dic = [
+            {"ticker": tickers[i], "Weight": weightSharpe[i] * 100}
+            for i in range(len(tickers))
+        ]
+        return pd.DataFrame(optim_dic)

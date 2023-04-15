@@ -43,13 +43,13 @@ def MovingAverageCrossStrategy(symbol, short_window, long_window, end_date, movi
     
     data = yf.download(symbol, start='2020-01-03', end=str(end_date)[:10], interval=inter)
     data.index = pd.to_datetime(data.index)
-    stock_df = pd.DataFrame(data['Adj Close'])        
-    stock_df.columns = {"Close Price"}  
+    stock_df = pd.DataFrame(data['Adj Close'])
+    stock_df.columns = {"Close Price"}
     stock_df = stock_df.fillna(0.0)
 
     # column names for long and short moving average columns
-    short_window_col = str(short_window) + "_" + moving_avg
-    long_window_col = str(long_window) + "_" + moving_avg
+    short_window_col = f"{str(short_window)}_" + moving_avg
+    long_window_col = f"{str(long_window)}_" + moving_avg
 
     # Create a short simple moving average (short_sma) & create a long simple moving average (long_sma) column
     if moving_avg == "SMA":
@@ -107,7 +107,7 @@ def MovingAverageCrossStrategy(symbol, short_window, long_window, end_date, movi
     plt.tight_layout()
     plt.show()
     st.pyplot(fig)
-    
+
     st.text(tabulate(df_pos.loc["2020":], headers="keys", tablefmt="psql"))
 
 

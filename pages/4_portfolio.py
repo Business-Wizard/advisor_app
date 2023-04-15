@@ -131,8 +131,8 @@ class Portfolio(object):
     def run_efficientFrontier(self, ticker_list):
         st.header("𝄖𝄗𝄘𝄙𝄚 ▷ Markowitz Efficient Frontier ◁ 𝄚𝄙𝄘𝄗𝄖")
         cols = st.columns(2)
-        with cols[0]:       
-            with st.expander("▷ Details:", expanded=False):            
+        with cols[0]:   
+            with st.expander("▷ Details:", expanded=False):    
                 st.caption("\
                     * In modern portfolio theory, the efficient frontier is an investment portfolio which occupies the efficient\
                         part of the risk–return spectrum. Formally, it is the set of portfolios which satisfy the \
@@ -143,10 +143,10 @@ class Portfolio(object):
                         Portfolios that lie below the efficient frontier are sub-optimal because they do not \
                         provide enough return for the level of risk. \n\n"
                 )
-                markowitz_efficientFrontier_web_page = ("https://www.investopedia.com/terms/e/efficientfrontier.asp")
                 if st.button("Open Markowitz Efficient Frontier Web Page"):
-                    webbrowser.open_new_tab(markowitz_efficientFrontier_web_page)                
-        st.header(f"{'𝄖'*33}")   
+                    markowitz_efficientFrontier_web_page = ("https://www.investopedia.com/terms/e/efficientfrontier.asp")
+                    webbrowser.open_new_tab(markowitz_efficientFrontier_web_page)
+        st.header(f"{'𝄖'*33}")
         if st.sidebar.button("[ 4 ] Run Efficient Frontier"):
             st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Selected Stock Portfolio: [{len(ticker_list)}]")
             st.markdown(f"* {ticker_list}")               

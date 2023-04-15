@@ -105,7 +105,7 @@ class The_Random_Forest(object):
         present = pd.DataFrame()
         present["tickers"] = list(self.component_df.columns[feature_importances[-1::-1]])
         n = len(self.component_df.columns)
-        
+
         importances = self.rf.feature_importances_[:n]
         std = np.std([tree.feature_importances_ for tree in self.rf.estimators_], axis=0)
         indices = np.argsort(importances)[::-1]
@@ -127,10 +127,7 @@ class The_Random_Forest(object):
         pandas_dataframe = pd.DataFrame(intermediate_dictionary).sort_values('importances', ascending=False)
 
 
-        string = ""
-        for i in list(pandas_dataframe['features']):
-            string += (i + " ")
-
+        string = "".join((i + " ") for i in list(pandas_dataframe['features']))
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Feature Importances")
         st.dataframe(pandas_dataframe.set_index('features'))
         st.text(string)
@@ -156,15 +153,16 @@ class The_Random_Forest(object):
         accuracies = []
         for n in num_trees:
             tot = 0
-            for i in range(5):
+            for _ in range(5):
                 rf = RandomForestClassifier(n_estimators=n)
                 rf.fit(self.X_train, self.y_train)
                 tot += rf.score(self.X_test, self.y_test)
             accuracies.append(tot / 5)
         tree_prediction = rf.predict(self.X_test)
-        lil_lst = {}
-        for nt in range(len(num_trees)):
-            lil_lst[num_trees[nt]] = round(accuracies[nt] * 100, 2)
+        lil_lst = {
+            num_trees[nt]: round(accuracies[nt] * 100, 2)
+            for nt in range(len(num_trees))
+        }
         self.maxT = max(lil_lst, key=lil_lst.get)
         maxA = max(accuracies)
 
@@ -200,14 +198,15 @@ class The_Random_Forest(object):
         accuracies = []
         for n in num_features:
             tot = 0
-            for i in range(5):
+            for _ in range(5):
                 rf = RandomForestClassifier(max_features=n)
                 rf.fit(self.X_train, self.y_train)
                 tot += rf.score(self.X_test, self.y_test)
             accuracies.append(tot / 5)
-        feature_dict = {}
-        for nt in range(len(num_features)):
-            feature_dict[num_features[nt]] = round(accuracies[nt] * 100, 2)
+        feature_dict = {
+            num_features[nt]: round(accuracies[nt] * 100, 2)
+            for nt in range(len(num_features))
+        }
         self.maxF = max(feature_dict, key=feature_dict.get)
         maxA2 = max(accuracies)
 

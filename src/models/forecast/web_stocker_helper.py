@@ -89,9 +89,7 @@ class Stocker(object):
         self.changepoints = None
 
         print(
-            "{} Stocker Initialized. Data covers {} to {}.".format(
-                self.symbol, self.min_date, self.max_date
-            )
+            f"{self.symbol} Stocker Initialized. Data covers {self.min_date} to {self.max_date}."
         )
 
     """
@@ -170,25 +168,25 @@ class Stocker(object):
                 end_in = False
 
             # If both are not in dataframe, round both
-            if (not end_in) & (not start_in):
+            if (
+                not (not end_in) & (not start_in)
+                and not (end_in) & (start_in)
+                and not start_in
+            ):
+                trim_df = df[
+                    (df["Date"] > start_date) & (df["Date"] <= end_date)
+                ]
+            elif (
+                not (not end_in) & (not start_in)
+                and not (end_in) & (start_in)
+                and not end_in
+            ):
+                trim_df = df[
+                    (df["Date"] >= start_date) & (df["Date"] < end_date)
+                ]
+
+            elif (not end_in) & (not start_in) or (end_in) & (start_in):
                 trim_df = df[(df["Date"] >= start_date) & (df["Date"] <= end_date)]
-
-            else:
-                # If both are in dataframe, round neither
-                if (end_in) & (start_in):
-                    trim_df = df[(df["Date"] >= start_date) & (df["Date"] <= end_date)]
-                else:
-                    # If only start is missing, round start
-                    if not start_in:
-                        trim_df = df[
-                            (df["Date"] > start_date) & (df["Date"] <= end_date)
-                        ]
-                    # If only end is imssing round end
-                    elif not end_in:
-                        trim_df = df[
-                            (df["Date"] >= start_date) & (df["Date"] < end_date)
-                        ]
-
         else:
             valid_start = False
             valid_end = False
@@ -282,11 +280,10 @@ class Stocker(object):
 
                 plt.xlabel("Date")
                 plt.ylabel("Change Relative to Average (%)")
-                plt.title("%s Stock History" % self.symbol)
+                plt.title(f"{self.symbol} Stock History")
                 plt.legend(prop={"size": 10})
                 plt.grid(color="k", alpha=0.4)
 
-            # Stat y-axis
             elif plot_type == "basic":
                 plt.style.use("fivethirtyeight")
                 plt.plot(
@@ -299,7 +296,7 @@ class Stocker(object):
                 )
                 plt.xlabel("Date")
                 plt.ylabel("US $")
-                plt.title("%s Stock History" % self.symbol)
+                plt.title(f"{self.symbol} Stock History")
                 plt.legend(prop={"size": 10})
                 plt.grid(color="k", alpha=0.4)
 
@@ -338,13 +335,11 @@ class Stocker(object):
         # Reset index to use ix
         dataframe = dataframe.reset_index(drop=True)
 
-        weekends = []
-
-        # Find all of the weekends
-        for i, date in enumerate(dataframe["ds"]):
-            if (date.weekday()) == 5 | (date.weekday() == 6):
-                weekends.append(i)
-
+        weekends = [
+            i
+            for i, date in enumerate(dataframe["ds"])
+            if (date.weekday()) == 5 | (date.weekday() == 6)
+        ]
         # Drop the weekends
         dataframe = dataframe.drop(weekends, axis=0)
 
@@ -386,11 +381,7 @@ class Stocker(object):
         plt.plot(profits["Date"], profits["hold_profit"], "b", linewidth=3)
         plt.ylabel("Profit ($)")
         plt.xlabel("Date")
-        plt.title(
-            "Buy · & · Hold {} [{}] {} to {}".format(
-                company_long_name, self.symbol, s_d, e_d
-            )
-        )
+        plt.title(f"Buy · & · Hold {company_long_name} [{self.symbol}] {s_d} to {e_d}")
         # Display final value on graph
         plt.text(
             x=text_location,
@@ -466,7 +457,7 @@ class Stocker(object):
 
         # Actual observations
         ax.plot(train["ds"], train["y"], "ko", ms=4, label="Observations")
-        color_dict = {prior: color for prior, color in zip(changepoint_priors, colors)}
+        color_dict = dict(zip(changepoint_priors, colors))
 
         # Plot each of the changepoint predictions
         for prior in changepoint_priors:
@@ -525,9 +516,9 @@ class Stocker(object):
                 )
             )
 
-            title = "%s Historical and Predicted Stock Price" % self.symbol
+            title = f"{self.symbol} Historical and Predicted Stock Price"
         else:
-            title = "%s Historical and Modeled Stock Price" % self.symbol
+            title = f"{self.symbol} Historical and Modeled Stock Price"
 
         # Set up the plot
         fig, ax = plt.subplots(1, 1)
@@ -640,7 +631,7 @@ class Stocker(object):
         # if not nshares:
 
         # Date range of predictions
-        st.caption("\n▸ Prediction Range: {} to {}.".format(start_date, end_date))
+        st.caption(f"\n▸ Prediction Range: {start_date} to {end_date}.")
 
         # Final prediction vs actual value
         st.caption(
@@ -743,9 +734,7 @@ class Stocker(object):
         plt.grid(linewidth=0.6, alpha=0.6)
 
         plt.title(
-            "{} Model Evaluation from {} to {}.".format(
-                self.symbol, f1.time_fixer(start_date), f1.time_fixer(end_date)
-            )
+            f"{self.symbol} Model Evaluation from {f1.time_fixer(start_date)} to {f1.time_fixer(end_date)}."
         )
         plt.show()
 
@@ -757,22 +746,10 @@ class Stocker(object):
             test_pred_increase = test[test["pred_diff"] > 0]
 
             test_pred_increase.reset_index(inplace=True)
-            prediction_profit = []
-
-            # Iterate through all the predictions and calculate profit from playing
-            for i, correct in enumerate(test_pred_increase["correct"]):
-
-                # If we predicted up and the price goes up, we gain the difference
-                if correct == 1:
-                    prediction_profit.append(
-                        nshares * test_pred_increase.loc[i, "real_diff"]
-                    )
-                # If we predicted up and the price goes down, we lose the difference
-                else:
-                    prediction_profit.append(
-                        nshares * test_pred_increase.loc[i, "real_diff"]
-                    )
-
+            prediction_profit = [
+                nshares * test_pred_increase.loc[i, "real_diff"]
+                for i, correct in enumerate(test_pred_increase["correct"])
+            ]
             test_pred_increase["pred_profit"] = prediction_profit
 
             # Put the profit into the test dataframe
@@ -787,9 +764,7 @@ class Stocker(object):
 
             # Display information
             st.caption(
-                "▸ You played the stock market in {} from {} to {} with {} shares.\n".format(
-                    self.symbol, start_date, end_date, nshares
-                )
+                f"▸ You played the stock market in {self.symbol} from {start_date} to {end_date} with {nshares} shares.\n"
             )
 
             st.caption(
@@ -924,11 +899,10 @@ class Stocker(object):
         changepoints = model.changepoints
         train = train.reset_index(drop=True)
 
-        # Create dataframe of only changepoints
-        change_indices = []
-        for changepoint in changepoints:
-            change_indices.append(train[train["ds"] == changepoint].index[0])
-
+        change_indices = [
+            train[train["ds"] == changepoint].index[0]
+            for changepoint in changepoints
+        ]
         c_data = train.loc[change_indices, :]
         deltas = model.params["delta"][0]
 
@@ -995,13 +969,13 @@ class Stocker(object):
         # Show related queries, rising related queries
         # Graph changepoints, search frequency, stock price
         if search:
-            date_range = ["%s %s" % (str(min(train["Date"])), str(max(train["Date"])))]
+            date_range = [f'{str(min(train["Date"]))} {str(max(train["Date"]))}']
 
             # Get the Google Trends for specified terms and join to training dataframe
             trends, related_queries = self.retrieve_google_trends(search, date_range)
 
             if (trends is None) or (related_queries is None):
-                print("No search trends found for %s" % search)
+                print(f"No search trends found for {search}")
                 return
 
             print("\n Top Related Queries: \n")
@@ -1062,9 +1036,7 @@ class Stocker(object):
             plt.legend(prop={"size": 10})
             plt.xlabel("Date")
             plt.ylabel("Normalized Values")
-            plt.title(
-                "%s Stock Price and Search Frequency for %s" % (self.symbol, search)
-            )
+            plt.title(f"{self.symbol} Stock Price and Search Frequency for {search}")
             plt.show()
 
     # Predict the future price for a given range of days
@@ -1166,7 +1138,7 @@ class Stocker(object):
         plt.xticks(rotation="45")
         plt.ylabel("Predicted Stock Price (US $)")
         plt.xlabel("Date")
-        plt.title("True Final Predictions for %s" % self.symbol)
+        plt.title(f"True Final Predictions for {self.symbol}")
         plt.show()
 
     def changepoint_prior_validation(
@@ -1207,11 +1179,7 @@ class Stocker(object):
             columns=["cps", "train_err", "train_range", "test_err", "test_range"],
         )
 
-        print(
-            "\nValidation Range {} to {}.\n".format(
-                min(test["Date"]), max(test["Date"])
-            )
-        )
+        print(f'\nValidation Range {min(test["Date"])} to {max(test["Date"])}.\n')
 
         # Iterate through all the changepoints and make models
         for i, prior in enumerate(changepoint_priors):

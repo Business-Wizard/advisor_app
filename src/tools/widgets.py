@@ -63,7 +63,7 @@ def snapshot_widget_index(keya, keyb):
 
 
 def widget_header(web1, subhead, key):
-    st.write(f">Online Resources:")
+    st.write(">Online Resources:")
     st.write(f"{web1}")
     st.subheader(f"{subhead}:")
     st.write(f"{key}")

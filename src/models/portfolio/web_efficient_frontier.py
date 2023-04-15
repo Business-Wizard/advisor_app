@@ -31,7 +31,7 @@ plt.rc("axes", linewidth=2)  # linewidth of plot lines
 
 import streamlit as st
 from pathlib import Path
-path = str(Path.cwd()) + "/"
+path = f"{str(Path.cwd())}/"
 from datetime import datetime
 today = str(datetime.now())[:10]
 
@@ -67,12 +67,12 @@ class The_Efficient_Frontier(object):
         # calculate portfolio metrics:
         self.portf_rtns = np.dot(self.weights, self.avg_returns)
         self.portf_vol = []
-        for i in range(0, len(self.weights)):
-            self.portf_vol.append(
-                np.sqrt(
-                    np.dot(self.weights[i].T, np.dot(self.cov_mat, self.weights[i]))
-                )
+        self.portf_vol.extend(
+            np.sqrt(
+                np.dot(self.weights[i].T, np.dot(self.cov_mat, self.weights[i]))
             )
+            for i in range(len(self.weights))
+        )
         self.portf_vol = np.array(self.portf_vol)
         self.portf_sharpe_ratio = self.portf_rtns / self.portf_vol
         # create joint dataframe with all data:
@@ -184,7 +184,8 @@ class The_Efficient_Frontier(object):
         ax.set(
             xlabel="Volatility",
             ylabel="Expected Returns",
-            title=f"Efficient Frontier",          )
+            title="Efficient Frontier",
+        )
         for label in ax.get_xticklabels() + ax.get_yticklabels():
             label.set_fontsize(15)
         ax.grid(True, color="k", linestyle="-", linewidth=1, alpha=0.3)

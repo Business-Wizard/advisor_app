@@ -38,9 +38,9 @@ class Analize_Portfolio(object):
             ticker = yf.Ticker(name)
             data = ticker.history(interval="1d", start="2010-01-01", end="2020-12-31")
             # data = yf.download(name, start="2020-01-01")
-            data["return_%s" % (name)] = data["Close"].pct_change(1)
+            data[f"return_{name}"] = data["Close"].pct_change(1)
 
-            returns = returns.join(data[["return_%s" % (name)]], how="outer").dropna()
+            returns = returns.join(data[[f"return_{name}"]], how="outer").dropna()
             returns
         mean_returns = returns.mean()
         cov_matrix = returns.cov()
@@ -60,9 +60,7 @@ class Analize_Portfolio(object):
             result = 0
             for t in composition:
                 name, weight = t[0], t[1]
-                s = simulate_returns(
-                    historical_returns["return_%s" % (name)], forecast_days
-                )
+                s = simulate_returns(historical_returns[f"return_{name}"], forecast_days)
                 result = result + s * weight
             return result
 
@@ -87,7 +85,7 @@ class Analize_Portfolio(object):
             for t in composition:
                 name, weight, correction = t[0], t[1], t[2]
                 s = simulate_modified_returns(
-                    historical_returns["return_%s" % (name)], forecast_days, correction
+                    historical_returns[f"return_{name}"], forecast_days, correction
                 )
                 result = result + s * weight
             return result

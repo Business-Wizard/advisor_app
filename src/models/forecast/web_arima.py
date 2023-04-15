@@ -37,10 +37,13 @@ class Arima2(object):
         self.company = f0.company_longName(self.stock)
 
     def runArima(self):
-        train_data, test_data = (self.df[0 : int(len(self.df) * 0.7)], self.df[int(len(self.df) * 0.7) :])
+        train_data, test_data = (
+            self.df[: int(len(self.df) * 0.7)],
+            self.df[int(len(self.df) * 0.7) :],
+        )
         training_data = train_data["Close"].values
         test_data = test_data["Close"].values
-        history = [x for x in training_data]
+        history = list(training_data)
         model_predictions = []
         N_test_observations = len(test_data)
 
@@ -84,10 +87,10 @@ class The_Arima_Model(object):
         data = yf.download(self.ticker, period=self.period, interval=self.interval)
         df = pd.DataFrame(data["Close"])
         df.reset_index(inplace=True)
-        train_data, test_data = df[0 : int(len(df) * 0.7)], df[int(len(df) * 0.7) :]
+        train_data, test_data = df[:int(len(df) * 0.7)], df[int(len(df) * 0.7) :]
         training_data = train_data["Close"].values
         test_data = test_data["Close"].values
-        history = [x for x in training_data]
+        history = list(training_data)
         model_predictions = []
         N_test_observations = len(test_data)
 

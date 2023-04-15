@@ -44,23 +44,21 @@ class The_Support_Resistance(object):
 
 
     def isSupport(self, df, i):
-        support = (
+        return (
             self.df["Low"][i] < self.df["Low"][i - 1]
             and self.df["Low"][i] < self.df["Low"][i + 1]
             and self.df["Low"][i + 1] < self.df["Low"][i + 2]
             and self.df["Low"][i - 1] < self.df["Low"][i - 2]
         )
-        return support
 
 
     def isResistance(self, df, i):
-        resistance = (
+        return (
             self.df["High"][i] > self.df["High"][i - 1]
             and self.df["High"][i] > self.df["High"][i + 1]
             and self.df["High"][i + 1] > self.df["High"][i + 2]
             and self.df["High"][i - 1] > self.df["High"][i - 2]
         )
-        return resistance
 
 
     def plot_all(self):
