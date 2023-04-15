@@ -20,19 +20,19 @@ class Single_Asset_Analysis(object):
         st.sidebar.write('*'*25)
         if st.sidebar.button('Run'):
             stock = finvizfinance(self.ticker)        
-            
+
             try:
                 company_name = f0.company_longName(self.ticker)
                 x = f"{company_name} [{self.ticker}]"
             except Exception as e:
                 pass            
-    
+
             try:
                 st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Asset · Overview · {x} 𝄚𝄙𝄘𝄗𝄖")
                 st.write('*'*25)
             except Exception as e:
                 pass
-            
+
             try:
                 stock_description = stock.ticker_description()
                 st.subheader('𝄖𝄗𝄘𝄙 Description')
@@ -47,7 +47,7 @@ class Single_Asset_Analysis(object):
                 st.write(' '*25)
             except Exception as e:
                 pass
-            
+
             try:
                 stock_chart = stock.ticker_charts()
                 st.subheader('𝄖𝄗𝄘𝄙 Stock Chart')
@@ -75,18 +75,16 @@ class Single_Asset_Analysis(object):
                 config.browser_user_agent = user_agent
                 config.request_timeout = 10
                 parsed_news=[]
-                new_stock_list=[]
                 pull_list=[]
                 bad_stocks=[]
-                news_tables={}
                 n=14
                 url = 'https://finviz.com/quote.ashx?t=' + self.ticker
-                req = Request(url=url,headers={'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0) Gecko/20100101 Firefox/78.0'}) 
-                resp = urlopen(req)    
+                req = Request(url=url,headers={'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0) Gecko/20100101 Firefox/78.0'})
+                resp = urlopen(req)
                 html = BeautifulSoup(resp, features="lxml")
                 news_table = html.find(id='news-table')
-                news_tables[self.ticker] = news_table
-                new_stock_list.append(self.ticker)
+                news_tables = {self.ticker: news_table}
+                new_stock_list = [self.ticker]
                 for file_name, news_table in news_tables.items():
                     try:
                         rows = news_table.findAll("tr")
@@ -113,15 +111,14 @@ class Single_Asset_Analysis(object):
                                 pass
                     except Exception as e:
                         print(e)
-                        pass            
                 parsed_news_df = pd.DataFrame(parsed_news)
                 parsed_news_df.columns = [x.lower() for x in parsed_news_df.columns]
                 parsed_news_df['date'] = pd.to_datetime(parsed_news_df['date'])
-                parsed_news_df = parsed_news_df[parsed_news_df['date'] >= pd.Timestamp('2022-06-01')]        
+                parsed_news_df = parsed_news_df[parsed_news_df['date'] >= pd.Timestamp('2022-06-01')]
                 st.dataframe(parsed_news_df)
             except Exception as e:
                 pass
-                
+
             try:
                 inside_trader_df = stock.ticker_inside_trader()
                 st.subheader('𝄖𝄗𝄘𝄙 Stock Insider Trading')
@@ -130,7 +127,7 @@ class Single_Asset_Analysis(object):
                 st.write(' '*25)
             except Exception as e:
                 pass
-            
+
             try:
                 stock_fundamentals = stock.ticker_fundament()
                 st.subheader('𝄖𝄗𝄘𝄙 Stock Fundamentals')

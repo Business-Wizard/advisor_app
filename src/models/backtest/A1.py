@@ -58,10 +58,7 @@ def ma_backtest(data, window, strategy="single", sellShort=False, slippage=0.003
     crossover equals price or ma to determine which strategy should be use
     """
     # catch the enabling of short selling at the beginning
-    if sellShort:
-        sellSignal = -1
-    else:
-        sellSignal = 0
+    sellSignal = -1 if sellShort else 0
     # vectorized backtests by strategy
     if strategy == "Single Moving Average":
         data["Side"] = data.apply(
@@ -90,20 +87,15 @@ def ma_backtest(data, window, strategy="single", sellShort=False, slippage=0.003
         elif data["Side"][i] < data["Side"][i - 1]:
             sellPrice.append(data.close[i])
             buyPrice.append(np.nan)
+        elif i < 1 and data.Side[i] < 0:
+            sellPrice.append(data.close[i])
+            buyPrice.append(np.nan)
+        elif i < 1 and data.Side[i] == 0 or i >= 1:
+            buyPrice.append(np.nan)
+            sellPrice.append(np.nan)
         else:
-            if i < 1:
-                if data.Side[i] < 0:
-                    sellPrice.append(data.close[i])
-                    buyPrice.append(np.nan)
-                elif data.Side[i] == 0:
-                    buyPrice.append(np.nan)
-                    sellPrice.append(np.nan)
-                else:
-                    buyPrice.append(data.close[i])
-                    sellPrice.append(np.nan)
-            else:
-                buyPrice.append(np.nan)
-                sellPrice.append(np.nan)
+            buyPrice.append(data.close[i])
+            sellPrice.append(np.nan)
     data["buyPrice"] = buyPrice
     data["sellPrice"] = sellPrice
     data["Slippage"] = (

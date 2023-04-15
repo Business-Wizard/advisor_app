@@ -65,7 +65,7 @@ class Optimal_SMA(object):
                     "p-value": pvalue,
                 }
             )
-            
+
         result.sort(key=lambda x: -x["training_forward_return"])
         # fd = pd.DataFrame(result).set_index("sma_length")
         best_sma = SMA_window = result[0]["sma_length"]
@@ -81,11 +81,11 @@ class Optimal_SMA(object):
 
         if graphit is True:
             # self.data = self.data[pd.to_datetime(self.data.index) < pd.to_datetime('2021')]
-            
+
             fig, ax = plt.subplots()
-            
+
             plt.plot(self.data["adjclose"], label=self.company_longName)
-            plt.plot(self.data[SMA_window_col], label="SMA-{}".format(best_sma))
+            plt.plot(self.data[SMA_window_col], label=f"SMA-{best_sma}")
             # plot 'buy' signals
             plt.plot(
                 self.data[self.data["Position"] == 1].index,
@@ -108,7 +108,7 @@ class Optimal_SMA(object):
             )
             plt.ylabel("Price in $", fontsize=20, fontweight="bold")
             plt.xlabel("Date", fontsize=20, fontweight="bold")
-            plt.title(f"{self.name} - {str(SMA_window)} Crossover", fontsize=30, fontweight="bold", )        
+            plt.title(f"{self.name} - {str(SMA_window)} Crossover", fontsize=30, fontweight="bold", )
             plt.xlabel("Date", fontsize=20, fontweight="bold")
             plt.ylabel("Price", fontsize=20, fontweight="bold")
             plt.title(f"{self.company_longName} ({self.name}) - SMA", fontsize=30, fontweight="bold", )

@@ -122,14 +122,23 @@ class Analysis(object):
         stock = Ticker(ticker)
         info = stock.asset_profile
         st.subheader(f"𝄖𝄗𝄘𝄙𝄚 Fundamental Analysis · {x} 𝄚𝄙𝄘𝄗𝄖")
-        st.subheader('𝄖'*41)        
+        st.subheader('𝄖'*41)
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Company Profile")
         # st.markdown(f"- {info['longName']}")
         # st.markdown(f"- Sector : " + info["sector"])
-        st.markdown(f"- Industry : " + info["industry"])
-        st.markdown(f"- Phone : " + info["phone"])
-        st.markdown(f"- Address : " + info["address1"] + ", " + info["city"] + ", " + info["zip"] + ", " + info["country"] )
-        st.markdown(f"- Website : " + info["website"])
+        st.markdown("- Industry : " + info["industry"])
+        st.markdown("- Phone : " + info["phone"])
+        st.markdown(
+            "- Address : "
+            + info["address1"]
+            + ", "
+            + info["city"]
+            + ", "
+            + info["zip"]
+            + ", "
+            + info["country"]
+        )
+        st.markdown("- Website : " + info["website"])
         st.subheader("𝄖𝄗𝄘𝄙 Business Summary")
         st.info(f"- {info['longBusinessSummary']}")
         fundInfo = {
@@ -156,9 +165,9 @@ class Analysis(object):
         st.subheader("𝄖𝄗𝄘𝄙𝄚 General Stock Info")
         st.markdown("- Market : " + info["market"])
         st.markdown("- Exchange : " + info["exchange"])
-        st.markdown("- Quote Type : " + info["quoteType"])  
-        start = datetime.today() - timedelta(2 * 365)
-        end = datetime.today()
+        st.markdown("- Quote Type : " + info["quoteType"])
+        start = datetime.now() - timedelta(2 * 365)
+        end = datetime.now()
         df = yf.download(ticker, start, end)
         df = df.reset_index()
         fig = go.Figure(data=go.Scatter(x=df["Date"], y=df["Adj Close"]))
@@ -231,8 +240,8 @@ class Analysis(object):
                 key=f"{ticker}_2",
             )
 
-        start = datetime.today() - timedelta(numYearMA * 365)
-        end = datetime.today()
+        start = datetime.now() - timedelta(numYearMA * 365)
+        end = datetime.now()
         dataMA = yf.download(ticker, start, end)
         df_ma = calcMovingAverage(dataMA, windowSizeMA)
         df_ma = df_ma.reset_index()
@@ -241,7 +250,7 @@ class Analysis(object):
             go.Scatter(
                 x=df_ma["Date"],
                 y=df_ma["Adj Close"],
-                name="Prices Over Last " + str(numYearMA) + " Year(s)",
+                name=f"Prices Over Last {str(numYearMA)} Year(s)",
             )
         )
         figMA.add_trace(
@@ -278,15 +287,39 @@ class Analysis(object):
             value=2,
             key=f"{ticker}_3",
         )
-        startMACD = datetime.today() - timedelta(numYearMACD * 365)
-        endMACD = datetime.today()
+        startMACD = datetime.now() - timedelta(numYearMACD * 365)
+        endMACD = datetime.now()
         dataMACD = yf.download(ticker, startMACD, endMACD)
         df_macd = calc_macd(dataMACD)
         df_macd = df_macd.reset_index()
         figMACD = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.01)
-        figMACD.add_trace(go.Scatter(x=df_macd["Date"], y=df_macd["Adj Close"], name="Prices Over Last " + str(numYearMACD) + " Year(s)", ), row=1, col=1)
-        figMACD.add_trace(go.Scatter(x=df_macd["Date"], y=df_macd["ema12"], name="EMA 12 Over Last " + str(numYearMACD) + " Year(s)", ), row=1, col=1)
-        figMACD.add_trace(go.Scatter(x=df_macd["Date"], y=df_macd["ema26"], name="EMA 26 Over Last " + str(numYearMACD) + " Year(s)",), row=1, col=1)
+        figMACD.add_trace(
+            go.Scatter(
+                x=df_macd["Date"],
+                y=df_macd["Adj Close"],
+                name=f"Prices Over Last {str(numYearMACD)} Year(s)",
+            ),
+            row=1,
+            col=1,
+        )
+        figMACD.add_trace(
+            go.Scatter(
+                x=df_macd["Date"],
+                y=df_macd["ema12"],
+                name=f"EMA 12 Over Last {str(numYearMACD)} Year(s)",
+            ),
+            row=1,
+            col=1,
+        )
+        figMACD.add_trace(
+            go.Scatter(
+                x=df_macd["Date"],
+                y=df_macd["ema26"],
+                name=f"EMA 26 Over Last {str(numYearMACD)} Year(s)",
+            ),
+            row=1,
+            col=1,
+        )
         figMACD.add_trace(go.Scatter(x=df_macd["Date"], y=df_macd["macd"], name="MACD Line"), row=2, col=1, )
         figMACD.add_trace(go.Scatter(x=df_macd["Date"], y=df_macd["signal"], name="Signal Line"), row=2, col=1, )
         figMACD.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1, xanchor="left", x=0))
@@ -310,8 +343,8 @@ class Analysis(object):
                 value=20,
                 key=f"{ticker}_5",
             )
-        startBoll = datetime.today() - timedelta(numYearBoll * 365)
-        endBoll = datetime.today()
+        startBoll = datetime.now() - timedelta(numYearBoll * 365)
+        endBoll = datetime.now()
         dataBoll = yf.download(ticker, startBoll, endBoll)
         df_boll = calcBollinger(dataBoll, windowSizeBoll)
         df_boll = df_boll.reset_index()

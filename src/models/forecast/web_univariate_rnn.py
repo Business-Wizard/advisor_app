@@ -73,10 +73,8 @@ class The_Univariate_TS_Reg(object):
                 data = data.values.reshape(-1, 1)  # make 2D
                 X = np.hstack(
                     tuple(
-                        [
-                            data[i : n - j, :]
-                            for i, j in enumerate(range(window_size, 0, -1))
-                        ]
+                        data[i : n - j, :]
+                        for i, j in enumerate(range(window_size, 0, -1))
                     )
                 )
                 return pd.DataFrame(X, index=y.index), y

@@ -22,9 +22,8 @@ class MC_Forecast(object):
         pass
 
 
-    def import_stock_data(self, tickers, start="2010-1-1", end=datetime.today().strftime("%Y-%m-%d")):
-        data = yf.download(tickers, start=start, end=end)["Adj Close"]
-        return data
+    def import_stock_data(self, tickers, start="2010-1-1", end=datetime.now().strftime("%Y-%m-%d")):
+        return yf.download(tickers, start=start, end=end)["Adj Close"]
 
 
     def log_returns(self, data):
@@ -121,8 +120,7 @@ class MC_Forecast(object):
             except:
                 stv = self.simple_returns(data).std()
 
-        dr = np.exp(ft + stv * norm.ppf(np.random.rand(days, iterations)))
-        return dr
+        return np.exp(ft + stv * norm.ppf(np.random.rand(days, iterations)))
 
 
     def probs_find(self, predicted, higherthan, on="value"):
@@ -219,7 +217,7 @@ class MC_Forecast(object):
             st.write(f"__▸ Beta: {round(inform.iloc[t,inform.columns.get_loc('Beta')],2)}__")
             st.write(f"__▸ Sharpe: {round(inform.iloc[t,inform.columns.get_loc('Sharpe')],2)}__")
             st.write(f"__▸ CAPM Return: {round(100*inform.iloc[t,inform.columns.get_loc('CAPM')],2)}%__")
-            
+
             if tickers[t] != 'SPY':
                 st.write(f"{'__'*25}")
 
@@ -229,5 +227,4 @@ class MC_Forecast(object):
             y = y[cols]
             simulatedDF.append(y)
 
-        simulatedDF = pd.concat(simulatedDF)
-        return simulatedDF
+        return pd.concat(simulatedDF)

@@ -17,20 +17,19 @@ def recommended_stocks_0(name_lst, report_date=''):
         return r_stocks, report_date        
 
 
-    if not report_date:      
-        report_date = st.sidebar.date_input(
-        label="> recommender date:",
-            value=date(2021, 7, 14),
-            min_value=date(2021, 7, 14),
-            max_value=edate,
-            key="date to run proof",
-            help="Select a date in the range between 2021.07.15 - 2021.08.26. \
+    report_date = st.sidebar.date_input(
+    label="> recommender date:",
+        value=date(2021, 7, 14),
+        min_value=date(2021, 7, 14),
+        max_value=edate,
+        key="date to run proof",
+        help="Select a date in the range between 2021.07.15 - 2021.08.26. \
                 This date will be the date the recommender model was run and we \
                     will use the resulting tickers for our proof",
-        )
-        saveReport_port_results = Path(f"reports/port_results/{str(report_date)[:7]}/{str(report_date)[:10]}/")
-        r_stocks = list(pd.read_csv(saveReport_port_results / f"{name_lst}.csv")["ticker"])
-        return r_stocks, report_date
+    )
+    saveReport_port_results = Path(f"reports/port_results/{str(report_date)[:7]}/{str(report_date)[:10]}/")
+    r_stocks = list(pd.read_csv(saveReport_port_results / f"{name_lst}.csv")["ticker"])
+    return r_stocks, report_date
 
 
 
@@ -69,7 +68,7 @@ def recommended_stocks_2(name_lst, report_date):
 
 
 def display_as_percent(val):
-    return str(round(val * 100, 1)) + "%"
+    return f"{str(round(val * 100, 1))}%"
 
 
 def company_longName(ticker):
@@ -81,11 +80,8 @@ def company_longName(ticker):
 
 
 def time_fixer(obj):
-    x = ""
     y = list(str(obj))[:10]
-    for i in y:
-        x += i
-    return x
+    return "".join(y)
 
 
 def generate_household_watch_list(a_lst, b_lst, c_lst):
@@ -93,10 +89,7 @@ def generate_household_watch_list(a_lst, b_lst, c_lst):
     two = one + c_lst
     three = list(set(two))
     four = sorted(three)
-    five = ""
-    for i in four:
-        five += i + " "
-    return five
+    return "".join(i + " " for i in four)
 
 
 def stock_selection(ex_lst):

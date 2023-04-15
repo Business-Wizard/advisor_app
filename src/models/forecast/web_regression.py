@@ -39,7 +39,7 @@ class Regression_Model(object):
         company_name = f0.company_longName(self.ticker)
         x = f"{company_name} [{self.ticker}]"
         st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 · {x} · 𝄚𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖")
-                
+
         df = yf.download(self.ticker, period="5y", parse_dates=True)
         dfreg = df.loc[:, ["Adj Close", "Volume"]]
         dfreg["HL_PCT"] = (df["High"] - df["Low"]) / df["Close"] * 100.0
@@ -78,7 +78,7 @@ class Regression_Model(object):
         confidencepoly3 = clfpoly3.score(X_test, y_test)
         confidenceknn = clfknn.score(X_test, y_test)
 
-        st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Regression Analysis · Model Results ")
+        st.subheader("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Regression Analysis · Model Results ")
         st.write(f"▷ Linear Regression Confidence =  [{round(confidencereg * 100, 2)}%]")
         st.write(f"▷ Quadratic Regression 2 Confidence =  [{round(confidencepoly2 * 100, 2)}%]")
         st.write(f"▷ Quadratic Regression 3 Confidence =  [{round(confidencepoly3 * 100, 2)}%]")
@@ -89,12 +89,11 @@ class Regression_Model(object):
         fd["Model_Results"] = [confidencereg, confidencepoly2, confidencepoly3, confidenceknn]
         fd.set_index("---Regression_Model---", inplace=True)
         fd.sort_values("Model_Results", ascending=False, inplace=True)
-        res_lst = [dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, fd.index[0]]
-        return res_lst
+        return [dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, fd.index[0]]
 
 
     def linear_regression(self, dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days=252):
-        st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Best Model Fit :  Linear Regression Forecast")
+        st.subheader("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Best Model Fit :  Linear Regression Forecast")
         forecast_set = clfreg.predict(X_lately)
         dfreg["Forecast"] = np.nan
         dfreg["Forecast"]
@@ -105,7 +104,7 @@ class Regression_Model(object):
             next_date = next_unix
             next_unix += timedelta(days)
             dfreg.loc[next_date] = [np.nan for _ in range(len(dfreg.columns) - 1)] + [i]
-                        
+
         fig = go.Figure()
         df11 = dfreg.tail(134).copy()
         fig.add_scattergl(x=df11.index, y=df11["Forecast"], line={'color': 'blue'}, name="Forecast Line")
@@ -135,7 +134,7 @@ class Regression_Model(object):
 
 
     def quadratic_regression_2(self, dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days=252):
-        st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Best Model Fit :  Quadratic-2 Regression Forecast")
+        st.subheader("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Best Model Fit :  Quadratic-2 Regression Forecast")
         forecast_set = clfpoly2.predict(X_lately)
         dfreg["Forecast"] = np.nan
         dfreg["Forecast"]
@@ -158,7 +157,7 @@ class Regression_Model(object):
             x=df11.index[-5], 
             y=df11["Adj Close"].max()*0.95, 
             showarrow=False
-            )        
+            )
         fig.update_layout(    
             title="Portfolio Performance",
             title_font_color="royalblue",
@@ -184,7 +183,7 @@ class Regression_Model(object):
 
 
     def quadratic_regression_3(self, dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days=252):
-        st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Best Model Fit :  Quadratic-3 Regression Forecast")
+        st.subheader("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Best Model Fit :  Quadratic-3 Regression Forecast")
         forecast_set = clfpoly3.predict(X_lately)
         dfreg["Forecast"] = np.nan
         dfreg["Forecast"]
@@ -195,7 +194,7 @@ class Regression_Model(object):
             next_date = next_unix
             next_unix += timedelta(days)
             dfreg.loc[next_date] = [np.nan for _ in range(len(dfreg.columns) - 1)] + [i]
-            
+
         fig = go.Figure()
         df11 = dfreg.tail(134).copy()
         fig.add_scattergl(x=df11.index, y=df11["Forecast"], line={'color': 'blue'}, name="Forecast Line")
@@ -207,7 +206,7 @@ class Regression_Model(object):
             x=df11.index[-5], 
             y=df11["Adj Close"].max()*0.95, 
             showarrow=False
-            )        
+            )
         fig.update_layout(    
             title="Portfolio Performance",
             title_font_color="royalblue",
@@ -233,7 +232,7 @@ class Regression_Model(object):
 
 
     def knn(self, dfreg, X_lately, clfreg, clfpoly2, clfpoly3, clfknn, days=252):
-        st.subheader(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Best Model Fit :  KNN Regression Forecast")
+        st.subheader("𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 Best Model Fit :  KNN Regression Forecast")
         forecast_set = clfknn.predict(X_lately)
         dfreg["Forecast"] = np.nan
         dfreg["Forecast"]
@@ -244,19 +243,19 @@ class Regression_Model(object):
             next_date = next_unix
             next_unix += timedelta(days)
             dfreg.loc[next_date] = [np.nan for _ in range(len(dfreg.columns) - 1)] + [i]
-            
+
         fig = go.Figure()
         df11 = dfreg.tail(134).copy()
         fig.add_scattergl(x=df11.index, y=df11["Forecast"], line={'color': 'blue'}, name="Forecast Line")
         fig.update_traces(mode='markers+lines')
-        fig.add_scattergl(x=df11.index, y=df11["Adj Close"], line={'color': 'black'}, name="Close Line")        
+        fig.add_scattergl(x=df11.index, y=df11["Adj Close"], line={'color': 'black'}, name="Close Line")
         fig.add_annotation(
             text="Absolutely-positioned annotation",
             xref="paper", yref="paper",
             x=df11.index[-5], 
             y=df11["Adj Close"].max()*0.95, 
             showarrow=False
-            )        
+            )
         fig.update_layout(    
             title="Portfolio Performance",
             title_font_color="royalblue",

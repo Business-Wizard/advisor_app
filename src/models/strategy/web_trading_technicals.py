@@ -132,11 +132,13 @@ class Trading_Technicals(object):
 
         ax2.plot(MACD_line, label="MACD Line")
         ax2.plot(signal_line, label="Signal Line")
-        histogram_y = [histogram["EMA"].iloc[i] for i in range(0, len(histogram))]
+        histogram_y = [histogram["EMA"].iloc[i] for i in range(len(histogram))]
         ax2.bar(
             histogram.index,
             histogram_y,
-            color=["g" if histogram_y[i] > 0 else "r" for i in range(0, len(histogram_y))],
+            color=[
+                "g" if histogram_y[i] > 0 else "r" for i in range(len(histogram_y))
+            ],
             width=1,
             label="Histogram",
         )
@@ -210,7 +212,7 @@ class Trading_Technicals(object):
 
         crossovers = pd.DataFrame()
         crossovers["Dates"] = SMA20["Date"]
-        crossovers["Price"] = [i for i in df["Close"]]
+        crossovers["Price"] = list(df["Close"])
         crossovers["SMA20"] = SMA20["Close"]
         crossovers["SMA50"] = SMA50["Close"]
         crossovers["position"] = crossovers["SMA20"] >= crossovers["SMA50"]

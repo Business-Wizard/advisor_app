@@ -75,9 +75,9 @@ class Proof_of_Concept_Viewer(object):
         new_wt_lst = []
         for i in portfolio_file['allocation']:
             new_wt_lst.append((i * 100) / og_wt)
-        portfolio_file['allocation'] = (new_wt_lst)        
+        portfolio_file['allocation'] = (new_wt_lst)
         self.portfolio_file = pd.DataFrame(portfolio_file)        
-        
+
         divisor = len(self.portfolio_file["ticker"])
         total_allocation = self.portfolio_file["allocation"].sum() / 100
         self.port_tics = sorted(list(self.portfolio_file["ticker"]))
@@ -97,13 +97,13 @@ class Proof_of_Concept_Viewer(object):
             for i in proof["ticker"]:
                 b.append(company_longName(i))
             proof["companyName"] = b            
-            
+
             df_close = pd.DataFrame(yf.download(self.port_tics, start=self.today_stamp, rounding=True)['Adj Close'])
             df_open = pd.DataFrame(yf.download(self.port_tics, start=self.today_stamp, rounding=True)['Open'])
-            
+
             df_close = df_close.fillna(0.0)
             df_open = df_open.fillna(0.0)
-            
+
 
             # df_close = pd.DataFrame()
             # df_open = pd.DataFrame()
@@ -134,8 +134,8 @@ class Proof_of_Concept_Viewer(object):
             #         print(f"failed ticker {i}")
             #         proof = proof.drop(proof[proof.ticker == i].index)
             #         self.port_tics.remove(i)
-            
-            
+
+
             try:
                 proof['start_price'] = list(df_open.iloc[-1])
             except Exception:
@@ -175,7 +175,7 @@ class Proof_of_Concept_Viewer(object):
             for k, v in enumerate(list(proof["ticker"])):
                 one[v] = one[v] * shares[k]
             lst = list(proof["ticker"])
-            one["portfolio"] = one[lst].sum(axis=1)          
+            one["portfolio"] = one[lst].sum(axis=1)
             start_cash = round(proof["initial_investment"].sum(), 2)
             avg_1 = round(one["portfolio"].mean(), 2)
             high_1 = round(one["portfolio"].max(), 2)
@@ -193,14 +193,12 @@ class Proof_of_Concept_Viewer(object):
             for i in list(one["portfolio"]):
                 if float(i) > high_1:
                     high_1 = float(i)
-                else:
-                    pass  
             one["since_open"] = round(((one["portfolio"] - start_cash) / start_cash) * 100, 2)
             act_ror = round(((list(one["portfolio"])[-1] - list(one["portfolio"])[0])/ list(one["portfolio"])[0])* 100,2,)
             gdp = pd.DataFrame(
                 ["Recommended Stocks", "SPY Index"], 
                 columns=["strategy_vs_benchmark"]
-            )              
+            )
             gdp["starting_money"] = [
                 f"${round(list(one['portfolio'])[0],2)}",
                 f"${round(proof_spy['initial_investment'].sum(),2)}",
@@ -216,7 +214,7 @@ class Proof_of_Concept_Viewer(object):
             gdp["mean_mark"] = [
                 f"{mean_watermark}%",
                 f"{mean_watermark_spy}%",
-            ]        
+            ]
             gdp["high_mark"] = [
                 f"{high_watermark}%",
                 f"{high_watermark_spy}%",
@@ -224,10 +222,11 @@ class Proof_of_Concept_Viewer(object):
             gdp["low_mark"] = [
                 f"{low_watermark}%",
                 f"{low_watermark_spy}%",
-            ]                        
-            gdp = gdp.set_index("strategy_vs_benchmark")            
+            ]
+            gdp = gdp.set_index("strategy_vs_benchmark")
             return one, x1, y1, x2, y2, gdp, start_cash, high_1, low_1
-        
+
+            
 
         def section_dictate_to_web_app(proof, gdp, one):
             st.caption(f"{'__'*25}\n{'__'*25}")
@@ -236,7 +235,7 @@ class Proof_of_Concept_Viewer(object):
             st.write(f" - Today's Position [{str(datetime.now())[:10]}] ")
             st.write(f"Total Allocation == {total_allocation}%")
             st.table(gdp)
-            st.write(f" - __Proof returns__")
+            st.write(" - __Proof returns__")
             st.write(f" - {namer}")
             st.write(f" - Winning Stock Picks [Positive Return] = {len(proof_2['ticker'])}/{divisor}, [{winning_percentage}%] ")
             st.write(f" - Stocks Outperforming The SPY  = {len(proof_3['ticker'])}/{divisor}, [{beat_spy_percentage}%   ]")
@@ -244,10 +243,11 @@ class Proof_of_Concept_Viewer(object):
             proof = proof.sort_values("return", ascending=False)
             proof["rank"] = proof["return"].rank(ascending=False)
             st.table(proof.set_index(["rank", "companyName", "ticker"]))
-            
+
             weiner = pd.DataFrame(one[one['since_open'] >= 10.0])
             davis = pd.DataFrame(one[one['since_open'] <= -10.0])
             return weiner, davis            
+
 
 
         def section_save_and_record(gdp, proof, proof_spy, one):
@@ -267,11 +267,11 @@ class Proof_of_Concept_Viewer(object):
                 plt.legend(loc='best')
                 st.subheader("__Portfolio Balance History__")
                 st.pyplot(fig)
-                
+
                 # two=pd.DataFrame(one.copy()).reset_index(inplace=True)
                 # weiner.reset_index(inplace=True)
                 # davis.reset_index(inplace=True)            
-                            
+
                 # fig = go.Figure()
                 # fig.add_trace(go.Scatter(x=two['date'], y=one['portfolio'], name='Portfolio',
                 #                         mode='lines+markers', line=dict(color='black', width=2)))
@@ -286,11 +286,11 @@ class Proof_of_Concept_Viewer(object):
                 #     paper_bgcolor="LightSteelBlue",
                 # )
                 # st.plotly_chart(fig)
-                
+
             st.write(f" * __HIGH WATERMARK:__ ${high_1} __[{round(((high_1 - start_cash) / start_cash) * 100, 2)}%]__")
             st.write(f" * __LOW WATERMARK:__ ${low_1} __[{round(((low_1 - start_cash) / start_cash) * 100, 2)}%]__")
             st.caption(f"{'__'*25}\n{'__'*25}")
-            
+
 
             if self.save_output == True:
                 gdp = pd.DataFrame(gdp)
@@ -298,12 +298,12 @@ class Proof_of_Concept_Viewer(object):
                 proof_spy = pd.DataFrame(proof_spy)
                 one = pd.DataFrame(one)
                 del one['since_open']
-                                
-                gdp.to_csv(self.final_loc / f"spy_vs_{namer}.csv")                
-                proof.to_csv(self.final_loc / f"{namer}.csv")                                
-                proof_spy.to_csv(self.final_loc / f"spy.csv")
+
+                gdp.to_csv(self.final_loc / f"spy_vs_{namer}.csv")
+                proof.to_csv(self.final_loc / f"{namer}.csv")
+                proof_spy.to_csv(self.final_loc / "spy.csv")
                 one.to_csv(self.final_loc / f"one_{self.namer}.csv")
-                
+
                 def convert_df(df):
                     return df.to_csv().encode('utf-8')
 
@@ -318,8 +318,9 @@ class Proof_of_Concept_Viewer(object):
                 return 
 
 
+
         def weiner_or_whore(one):
-            path101 = Path(f"reports/measurements/")
+            path101 = Path("reports/measurements/")
             fd = pd.DataFrame(pd.read_csv(path101 / "dick_measurement.csv")).set_index('date')
 
             def mini():            
@@ -333,7 +334,7 @@ class Proof_of_Concept_Viewer(object):
                     else:
                         hood_rat_status = 'curious'
                         return hood_rat_status
-            
+
             hood_rat_status = mini()
             if hood_rat_status == "Gator":
                 fd[f"{self.namer}"][f"{self.og_day}"] = +10.0
@@ -344,10 +345,11 @@ class Proof_of_Concept_Viewer(object):
             fd.to_csv(path101 / "dick_measurement.csv")
 
 
-        proof, df_close = section_proof_df()            
-        proof_spy, winning_percentage, beat_spy_percentage, proof_2, proof_3 = section_spy_df()            
-        one, x1, y1, x2, y2, gdp, start_cash, high_1, low_1 = section_one_df(df_close)            
-        weiner, davis = section_dictate_to_web_app(proof, gdp, one)                
+
+        proof, df_close = section_proof_df()
+        proof_spy, winning_percentage, beat_spy_percentage, proof_2, proof_3 = section_spy_df()
+        one, x1, y1, x2, y2, gdp, start_cash, high_1, low_1 = section_one_df(df_close)
+        weiner, davis = section_dictate_to_web_app(proof, gdp, one)
         section_save_and_record(gdp, proof, proof_spy, one)
         weiner_or_whore(one)            
 
@@ -416,19 +418,19 @@ class Proof_of_Concept(object):
         new_wt_lst = []
         for i in portfolio_file['allocation']:
             new_wt_lst.append((i * 100) / og_wt)
-        portfolio_file['allocation'] = (new_wt_lst)        
+        portfolio_file['allocation'] = (new_wt_lst)
         portfolio_file = pd.DataFrame(portfolio_file).sort_values('ticker')
-                
+
         self.namer = namer
         self.initial_cash = initial_cash
         divisor = len(portfolio_file["ticker"])
         total_allocation = portfolio_file["allocation"].sum() / 100
-        
+
         df = pd.DataFrame(data.loc[self.starter_date:]).round(2)
         df = df.reindex(sorted(df.columns), axis=1)
 
         proof = pd.DataFrame(portfolio_file[["ticker", "allocation"]]).sort_values("ticker", ascending=True)
-        
+
         b = []
         for i in proof["ticker"]:
             b.append(company_longName(i))
@@ -467,7 +469,7 @@ class Proof_of_Concept(object):
         proof_spy["shares"] = round(proof_spy["initial_investment"] / proof_spy["start_price"], 2)
         proof_spy["cash_now"] = round(proof_spy["shares"] * proof_spy["current_price"], 2)
         proof_spy["return"] = round(((proof_spy["cash_now"] - proof_spy["initial_investment"])/ proof_spy["initial_investment"])* 100,2,)
-        
+
 
         high_watermark_spy = round(proof_spy["return"].max(), 2)
         low_watermark_spy = round(proof_spy["return"].min(), 2)
@@ -499,7 +501,7 @@ class Proof_of_Concept(object):
         low_watermark_spy = round(proof_spy["return"].min(), 2)
         beat_num = proof_spy["return"][0]
         proof_2 = proof[proof["return"] > 0.0]
-        proof_3 = proof_2[proof_2["return"] > beat_num]                  
+        proof_3 = proof_2[proof_2["return"] > beat_num]
         x1 = eno[eno["portfolio"] == eno["portfolio"].max()]["date"]
         y1 = one["portfolio"].max()
         x2 = eno[eno["portfolio"] == eno["portfolio"].min()]["date"]
@@ -507,8 +509,6 @@ class Proof_of_Concept(object):
         for i in list(one["portfolio"]):
             if float(i) > high_1:
                 high_1 = float(i)
-            else:
-                pass  
         one["since_open"] = round(((one["portfolio"] - start_cash) / start_cash) * 100, 2)
         try:
             act_ror = round(((list(one["portfolio"])[-1] - list(one["portfolio"])[0])/ list(one["portfolio"])[0])* 100,2,)
@@ -532,7 +532,7 @@ class Proof_of_Concept(object):
         gdp["mean_mark"] = [
             f"{mean_watermark}%",
             f"{mean_watermark_spy}%",
-        ]        
+        ]
         gdp["high_mark"] = [
             f"{high_watermark}%",
             f"{high_watermark_spy}%",
@@ -540,7 +540,7 @@ class Proof_of_Concept(object):
         gdp["low_mark"] = [
             f"{low_watermark}%",
             f"{low_watermark_spy}%",
-        ]                        
+        ]
         gdp = gdp.set_index("strategy_vs_benchmark")
 
 
@@ -550,7 +550,7 @@ class Proof_of_Concept(object):
         st.write(f" - Today's Position [{str(datetime.now())[:10]}] ")
         st.write(f" - Total Allocation: {round(total_allocation*100,2)}%")
         st.table(gdp)
-        st.write(f" - __Proof returns__")
+        st.write(" - __Proof returns__")
         st.write(f" - {self.namer}")
         st.write(f" - Winning Stock Picks [Positive Return] = {len(proof_2['ticker'])}/{divisor}, [{winning_percentage}%] ")
         st.write(f" - Stocks Outperforming The SPY  = {len(proof_3['ticker'])}/{divisor}, [{beat_spy_percentage}%   ]")
@@ -561,7 +561,7 @@ class Proof_of_Concept(object):
         st.table(proof.set_index(["rank", "companyName", "ticker"]))
 
         one["since_open"] = round(((one["portfolio"] - start_cash) / start_cash) * 100, 2)
-        
+
         two = pd.DataFrame(one.copy())
         weiner = pd.DataFrame(two[two['since_open'] >= 10.0])
         davis = pd.DataFrame(two[two['since_open'] <= -10.0])
@@ -583,11 +583,11 @@ class Proof_of_Concept(object):
             plt.legend(loc='best')
             st.subheader("__Portfolio Balance History__")
             st.pyplot(fig)
-            
+
             two.reset_index(inplace=True)
             weiner.reset_index(inplace=True)
             davis.reset_index(inplace=True)            
-                        
+
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=two['date'], y=one['portfolio'], name='Portfolio',
                                     mode='lines+markers', line=dict(color='black', width=2)))
@@ -602,9 +602,9 @@ class Proof_of_Concept(object):
                 paper_bgcolor="LightSteelBlue",
             )
             st.plotly_chart(fig)
-                        
 
-            
+
+
         st.write(f" * __HIGH WATERMARK:__ ${high_1} __[{round(((high_1 - start_cash) / start_cash) * 100, 2)}%]__")
         st.write(f" * __LOW WATERMARK:__ ${low_1} __[{round(((low_1 - start_cash) / start_cash) * 100, 2)}%]__")
 
@@ -619,9 +619,10 @@ class Proof_of_Concept(object):
                 else:
                     hood_rat_status = 'curious'
                     return hood_rat_status
+
         hood_rat_status = weiner_or_whore(one)
 
-        path101 = Path(f"reports/measurements/")
+        path101 = Path("reports/measurements/")
         fd = pd.DataFrame(pd.read_csv(path101 / "dick_measurement.csv")).set_index('date')
         if hood_rat_status == "Gator":
             fd[f"{self.namer}"][f"{self.og_day}"] = +10.0
@@ -638,15 +639,15 @@ class Proof_of_Concept(object):
             proof_spy = pd.DataFrame(proof_spy)
             one = pd.DataFrame(one)
             del one['since_open']
-                            
-            gdp.to_csv(self.final_loc / f"spy_vs_{namer}.csv")                
-            proof.to_csv(self.final_loc / f"{namer}.csv")                                
-            proof_spy.to_csv(self.final_loc / f"spy.csv")
+
+            gdp.to_csv(self.final_loc / f"spy_vs_{namer}.csv")
+            proof.to_csv(self.final_loc / f"{namer}.csv")
+            proof_spy.to_csv(self.final_loc / "spy.csv")
             one.to_csv(self.final_loc / f"one_{self.namer}.csv")
 
             def convert_df(df):
                 return df.to_csv().encode('utf-8')
-            
+
             csv = convert_df(proof)
             st.download_button(
                 label="Download data as CSV",
@@ -655,7 +656,7 @@ class Proof_of_Concept(object):
                 mime='text/csv',
                 key=str(self.namer),
             )
-            return 
+            return
         else:
             return 
 
@@ -695,9 +696,9 @@ class Proof_of_Concept_Builder(object):
         new_wt_lst = []
         for i in portfolio_file['allocation']:
             new_wt_lst.append((i * 100) / og_wt)
-        portfolio_file['allocation'] = (new_wt_lst)        
+        portfolio_file['allocation'] = (new_wt_lst)
         portfolio_file = pd.DataFrame(portfolio_file).sort_values('ticker')
-        
+
         self.namer = namer
         self.initial_cash = initial_cash
         divisor = len(portfolio_file["ticker"])
@@ -778,7 +779,7 @@ class Proof_of_Concept_Builder(object):
         proof_spy["shares"] = round(proof_spy["initial_investment"] / proof_spy["start_price"], 2)
         proof_spy["cash_now"] = round(proof_spy["shares"] * proof_spy["current_price"], 2)
         proof_spy["return"] = round(((proof_spy["cash_now"] - proof_spy["initial_investment"])/ proof_spy["initial_investment"])* 100,2,)
-        
+
 
         high_watermark_spy = round(proof_spy["return"].max(), 2)
         low_watermark_spy = round(proof_spy["return"].min(), 2)
@@ -811,7 +812,7 @@ class Proof_of_Concept_Builder(object):
         low_watermark_spy = round(proof_spy["return"].min(), 2)
         beat_num = proof_spy["return"][0]
         proof_2 = proof[proof["return"] > 0.0]
-        proof_3 = proof_2[proof_2["return"] > beat_num]                  
+        proof_3 = proof_2[proof_2["return"] > beat_num]
         x1 = eno[eno["portfolio"] == eno["portfolio"].max()]["date"]
         y1 = one["portfolio"].max()
         x2 = eno[eno["portfolio"] == eno["portfolio"].min()]["date"]
@@ -819,8 +820,6 @@ class Proof_of_Concept_Builder(object):
         for i in list(one["portfolio"]):
             if float(i) > high_1:
                 high_1 = float(i)
-            else:
-                pass  
         one["since_open"] = round(((one["portfolio"] - start_cash) / start_cash) * 100, 2)
         try:
             act_ror = round(((list(one["portfolio"])[-1] - list(one["portfolio"])[0])/ list(one["portfolio"])[0])* 100,2,)
@@ -844,7 +843,7 @@ class Proof_of_Concept_Builder(object):
         gdp["mean_mark"] = [
             f"{mean_watermark}%",
             f"{mean_watermark_spy}%",
-        ]        
+        ]
         gdp["high_mark"] = [
             f"{high_watermark}%",
             f"{high_watermark_spy}%",
@@ -852,7 +851,7 @@ class Proof_of_Concept_Builder(object):
         gdp["low_mark"] = [
             f"{low_watermark}%",
             f"{low_watermark_spy}%",
-        ]                        
+        ]
         gdp = gdp.set_index("strategy_vs_benchmark")
 
 
@@ -862,7 +861,7 @@ class Proof_of_Concept_Builder(object):
         st.write(f" - Today's Position [{str(datetime.now())[:10]}] ")
         st.write(f" - Total Allocation: {round(total_allocation*100,2)}%")
         st.table(gdp)
-        st.write(f" - __Proof returns__")
+        st.write(" - __Proof returns__")
         st.write(f" - {self.namer}")
         st.write(f" - Winning Stock Picks [Positive Return] = {len(proof_2['ticker'])}/{divisor}, [{winning_percentage}%] ")
         st.write(f" - Stocks Outperforming The SPY  = {len(proof_3['ticker'])}/{divisor}, [{beat_spy_percentage}%   ]")
@@ -893,11 +892,11 @@ class Proof_of_Concept_Builder(object):
             plt.legend(loc='best')
             st.subheader("__Portfolio Balance History__")
             st.pyplot(fig)
-            
+
             # two=pd.DataFrame(one.copy()).reset_index(inplace=True)
             # weiner.reset_index(inplace=True)
             # davis.reset_index(inplace=True)            
-                        
+
             # fig = go.Figure()
             # fig.add_trace(go.Scatter(x=two['date'], y=one['portfolio'], name='Portfolio',
             #                         mode='lines+markers', line=dict(color='black', width=2)))
@@ -912,10 +911,10 @@ class Proof_of_Concept_Builder(object):
             #     paper_bgcolor="LightSteelBlue",
             # )
             # st.plotly_chart(fig)
-            
+
         st.write(f" * __HIGH WATERMARK:__ ${high_1} __[{round(((high_1 - start_cash) / start_cash) * 100, 2)}%]__")
         st.write(f" * __LOW WATERMARK:__ ${low_1} __[{round(((low_1 - start_cash) / start_cash) * 100, 2)}%]__")
-        
+
 
         def weiner_or_whore(one):
             for i in one['since_open']:
@@ -928,9 +927,10 @@ class Proof_of_Concept_Builder(object):
                 else:
                     hood_rat_status = 'curious'
                     return hood_rat_status
+
         hood_rat_status = weiner_or_whore(one)
 
-        path101 = Path(f"reports/measurements/")
+        path101 = Path("reports/measurements/")
         fd = pd.DataFrame(pd.read_csv(path101 / "dick_measurement.csv")).set_index('date')
         if hood_rat_status == "Gator":
             fd[f"{self.namer}"][f"{self.og_day}"] = +10.0
@@ -947,15 +947,15 @@ class Proof_of_Concept_Builder(object):
             proof_spy = pd.DataFrame(proof_spy)
             one = pd.DataFrame(one)
             del one['since_open']
-                            
-            gdp.to_csv(self.final_loc / f"spy_vs_{namer}.csv")                
-            proof.to_csv(self.final_loc / f"{namer}.csv")                                
-            proof_spy.to_csv(self.final_loc / f"spy.csv")
+
+            gdp.to_csv(self.final_loc / f"spy_vs_{namer}.csv")
+            proof.to_csv(self.final_loc / f"{namer}.csv")
+            proof_spy.to_csv(self.final_loc / "spy.csv")
             one.to_csv(self.final_loc / f"one_{self.namer}.csv")
 
             def convert_df(df):
                 return df.to_csv().encode('utf-8')
-            
+
             csv = convert_df(proof)
             st.download_button(
                 label="Download data as CSV",
@@ -964,6 +964,6 @@ class Proof_of_Concept_Builder(object):
                 mime='text/csv',
                 key=str(self.namer),
             )
-            return 
+            return
         else:
             return 

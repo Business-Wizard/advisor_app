@@ -40,8 +40,8 @@ class Strategy(object):
 
     def run_the_strats(self):
         method_strat = st.sidebar.selectbox("Select Method", ("Individual Strategy", "Run All Strategies"))
-        
-        
+
+
         if method_strat == "Run All Strategies":
             self.stock_ticker = st.sidebar.text_input(label="Enter Stock In ALL CAPS [example: TSLA]", value="")
             st.sidebar.write(" *" * 25)            
@@ -59,28 +59,27 @@ class Strategy(object):
 
             if model == "-Select-Model-":
                 self.run_homePage()
-                
-            else:
-                if st.sidebar.button("Implement Strategy"):
 
-                    if model == "Moving-Average":
-                        st.sidebar.write("__" * 25)
-                        self.run_movAvg_sma_ema(self.stock_ticker)
+            elif st.sidebar.button("Implement Strategy"):
 
-                    if model == "Optimal SMA":
-                        self.run_optimal_sma(self.stock_ticker)
+                if model == "Moving-Average":
+                    st.sidebar.write("__" * 25)
+                    self.run_movAvg_sma_ema(self.stock_ticker)
 
-                    if model == "OverBought & OverSold":
-                        self.run_overBought_overSold(self.stock_ticker)
+                if model == "Optimal SMA":
+                    self.run_optimal_sma(self.stock_ticker)
 
-                    if model == "Support & Resistance Lines":
-                        self.run_supportResistance(self.stock_ticker)
+                if model == "OverBought & OverSold":
+                    self.run_overBought_overSold(self.stock_ticker)
 
-                    if model == "Strategy II":
-                        self.run_strategyII(self.stock_ticker)
-                        
-                    if model == "Indicators":
-                        self.run_indicators(self.stock_ticker)
+                if model == "Support & Resistance Lines":
+                    self.run_supportResistance(self.stock_ticker)
+
+                if model == "Strategy II":
+                    self.run_strategyII(self.stock_ticker)
+
+                if model == "Indicators":
+                    self.run_indicators(self.stock_ticker)
 
 
     def run_homePage(self):       

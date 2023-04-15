@@ -64,10 +64,8 @@ class The_Univariate_TS_Reg(object):
             data = data.values.reshape(-1, 1)  # make 2D
             X = np.hstack(
                 tuple(
-                    [
-                        data[i : n - j, :]
-                        for i, j in enumerate(range(window_size, 0, -1))
-                    ]
+                    data[i : n - j, :]
+                    for i, j in enumerate(range(window_size, 0, -1))
                 )
             )
             return pd.DataFrame(X, index=y.index), y
@@ -76,7 +74,7 @@ class The_Univariate_TS_Reg(object):
         X, y = create_univariate_rnn_data(sp500_scaled, window_size)
         X_train = X[:"2020"].values.reshape(-1, window_size, 1)
         y_train = y[:"2020"]
-        
+
         # keep the last year for testing
         X_test = X["2020":].values.reshape(-1, window_size, 1)
         y_test = y["2020":]
@@ -109,12 +107,12 @@ class The_Univariate_TS_Reg(object):
             mode="min",
             save_best_only=True,
         )
-        
+
         early_stopping = EarlyStopping(
             monitor="val_loss", 
             patience=10, 
             restore_best_weights=True)
-        
+
         lstm_training = rnn.fit(
             X_train,
             y_train,
@@ -140,7 +138,7 @@ class The_Univariate_TS_Reg(object):
         # fig.tight_layout()
         # st.pyplot(fig)
         # plt.close(fig)
-        
+
 
         train_rmse_scaled = np.sqrt(rnn.evaluate(X_train, y_train, verbose=1))
         test_rmse_scaled = np.sqrt(rnn.evaluate(X_test, y_test, verbose=1))

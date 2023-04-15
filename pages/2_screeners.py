@@ -168,11 +168,10 @@ class Snapshot(object):
         df = pd.DataFrame(res, columns=["symbol"])
         companyNames = []
         for i in df["symbol"]:
-            x = f0.company_longName(i)
-            if not x:
-                companyNames.append(i)
-            else:
+            if x := f0.company_longName(i):
                 companyNames.append(x)
+            else:
+                companyNames.append(i)
         df["companyName"] = companyNames
         currentPrice = []
         targetMeanPrice = []

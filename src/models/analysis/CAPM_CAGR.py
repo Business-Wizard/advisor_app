@@ -15,9 +15,8 @@ class CAPM_CAGR(object):
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Ratio · Analysis · [CAPM & CAGR] 𝄚𝄙𝄘𝄗𝄖")
 
 
-    def import_stock_data(self, tickers, start="2010-1-1", end=datetime.today().strftime("%Y-%m-%d")):
-        data = pd.DataFrame(yf.download(tickers, period="1y")["Adj Close"])
-        return data
+    def import_stock_data(self, tickers, start="2010-1-1", end=datetime.now().strftime("%Y-%m-%d")):
+        return pd.DataFrame(yf.download(tickers, period="1y")["Adj Close"])
 
 
     def compute_beta(self, data, stock, market):
@@ -34,16 +33,14 @@ class CAPM_CAGR(object):
         df["cumulative_returns"] = (1 + df["daily_returns"]).cumprod()
         trading_days = 252
         n = len(df) / trading_days
-        cagr = (df["cumulative_returns"][-1]) ** (1 / n) - 1
-        return cagr
+        return (df["cumulative_returns"][-1]) ** (1 / n) - 1
 
 
     def volatility(self, data):
         df = data.copy()
         df["daily_returns"] = df["Adj Close"].pct_change()
         trading_days = 252
-        vol = df["daily_returns"].std() * np.sqrt(trading_days)
-        return vol
+        return df["daily_returns"].std() * np.sqrt(trading_days)
 
 
     def compute_capm(self, data, stock, market, riskfree=0.0285):
@@ -55,8 +52,7 @@ class CAPM_CAGR(object):
 
     def sharpe_ratio(self, data, rf):
         df = data.copy()
-        sharpe = (self.CAGR(df) - rf) / self.volatility(df)
-        return sharpe
+        return (self.CAGR(df) - rf) / self.volatility(df)
 
 
     def compute_sharpe(self, data, stock, market, riskfree=0.0285):
@@ -70,8 +66,7 @@ class CAPM_CAGR(object):
         df["daily_returns"] = df["Adj Close"].pct_change()
         df["negative_returns"] = np.where(df["daily_returns"] < 0, df["daily_returns"], 0)
         negative_volatility = df["negative_returns"].std() * np.sqrt(252)
-        sortino = (self.CAGR(df) - rf) / negative_volatility
-        return sortino
+        return (self.CAGR(df) - rf) / negative_volatility
 
 
     def maximum_drawdown(self, data):
@@ -81,14 +76,12 @@ class CAPM_CAGR(object):
         df["cumulative_max"] = df["cumulative_returns"].cummax()
         df["drawdown"] = df["cumulative_max"] - df["cumulative_returns"]
         df["drawdown_pct"] = df["drawdown"] / df["cumulative_max"]
-        max_dd = df["drawdown_pct"].max()
-        return max_dd
+        return df["drawdown_pct"].max()
 
 
     def calmar_ratio(self, data, rf):
         df = data.copy()
-        calmar = (self.CAGR(df) - rf) / self.maximum_drawdown(data)
-        return calmar
+        return (self.CAGR(df) - rf) / self.maximum_drawdown(data)
 
 
     def stock_CAPM(self, stock_ticker, market_ticker, start_date="2010-1-1", riskfree=0.025):
@@ -96,8 +89,7 @@ class CAPM_CAGR(object):
         beta = self.compute_beta(data, stock_ticker, market_ticker)
         capm = self.compute_capm(data, stock_ticker, market_ticker, riskfree)
         sharpe = self.compute_sharpe(data, stock_ticker, market_ticker, riskfree)
-        listcapm = [beta, capm, sharpe]
-        return listcapm
+        return [beta, capm, sharpe]
     
 
     def configure_mod(self, ticker_lst):

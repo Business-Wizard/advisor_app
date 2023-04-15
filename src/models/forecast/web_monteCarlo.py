@@ -133,7 +133,7 @@ class The_Monte_Carlo(object):
         data = pd.DataFrame(yf.download(self.stock, start='2020-01-03', end='2022-01-03')['Adj Close'])
         data.columns = [self.stock]
         pred_date = data.index[-1]        
-        
+
         log_returns = np.log(1 + data.pct_change())
         u = log_returns.mean()
         var = log_returns.var()
@@ -143,41 +143,41 @@ class The_Monte_Carlo(object):
         x = np.random.rand(10, 2)
         norm.ppf(x)
         Z = norm.ppf(np.random.rand(10, 2))
-        S0 = data.iloc[-1]        
+        S0 = data.iloc[-1]
         t_intervals = 252
         iterations = 250
         metric1 = (t_intervals-1)
-        
+
         daily_returns = np.exp(drift.values + stdev.values * norm.ppf(np.random.rand(t_intervals, iterations)))
-        
+
         price_list = np.zeros_like(daily_returns)
         price_list[0] = S0
         for t in range(1, t_intervals):
             price_list[t] = price_list[t - 1] * daily_returns[t]
-            
+
         today = datetime(2022, 1, 1)
         days_lst = [today]
-        for i in range(metric1):
+        for _ in range(metric1):
             tday = days_lst[-1]
             next = tday + timedelta(days=1)
             days_lst.append(next)   
-        
+
         price_list_df = pd.DataFrame.from_records(price_list)
         price_list_df['date'] = days_lst
         price_list_df = price_list_df.set_index('date')
         price_list_df.index = pd.to_datetime(price_list_df.index)
-        
+
         new_df = yf.download(self.stock, start=str(pred_date)[:10]).iloc[:metric1+1]
         selected_indices = new_df.index
         index = [date.date() for date in selected_indices]            
-        
+
         company_name = f0.company_longName(self.stock)
         x = f"{company_name} - [{self.stock}]"
         st.header(f"𝄖𝄖𝄗𝄗𝄘𝄘𝄙𝄙𝄚𝄚 {x} 𝄚𝄚𝄙𝄙𝄘𝄘𝄗𝄗𝄖𝄖")
         st.subheader("𝄖𝄗𝄘𝄙𝄚 Metrics:")
         st.write(f"- Forecast Intervals (days): {t_intervals}")
         st.write(f"- Simulation Iterations {iterations}")
-        
+
         fig, ax = plt.subplots()
         ax = price_list_df.plot(label=price_list_df.columns, lw=1.5, ls='--', alpha=0.8, legend=False)
         (line_1,) = ax.plot(price_list_df.index, price_list_df.mean(axis=1), color="red", lw=3)
@@ -188,7 +188,7 @@ class The_Monte_Carlo(object):
         plt.ylabel('Price', fontsize=20, fontweight="bold")
         for label in ax.get_xticklabels() + ax.get_yticklabels():
             label.set_fontsize(15)
-        ax.grid(True, alpha=0.3)        
+        ax.grid(True, alpha=0.3)
         plt.tight_layout()
         st.pyplot(plt.show())
         plt.close(fig)
